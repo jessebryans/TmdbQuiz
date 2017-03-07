@@ -37,7 +37,7 @@ gulp.task('browser-sync', () => {
 
 
 gulp.task('watch', () => {
-	return gulp.watch('./dev/styles/**/*.scss', ['styles']);
+	return gulp.watch('./dev/css/**/*.scss', ['styles']);
 });
 
 
