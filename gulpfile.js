@@ -31,7 +31,7 @@ gulp.task('javascript', () => {
 
 gulp.task('browser-sync', () => {
   browserSync.init({
-    server: './public'  
+    server: '.'  
   })
 });
 
