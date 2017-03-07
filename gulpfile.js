@@ -20,11 +20,11 @@ gulp.task('styles', () => {
 
 
 gulp.task('javascript', () => {
-	return gulp.src('./dev/scripts/main.js')
+	return gulp.src('./dev/js/js.js')
 		.pipe(babel({
 			presets: ['es2015']
 		}))
-		.pipe(gulp.dest('./public/scripts'))
+		.pipe(gulp.dest('./public/js'))
 		.pipe(reload({stream: true}));
 });
 
