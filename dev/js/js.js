@@ -2,29 +2,28 @@
 
  	quizApp.getMovies = function(year) {
  		return $.ajax({
- 				url: 'https://api.themoviedb.org/3/discover/movie',
- 				type: 'GET',
- 				dataType: 'JSON',
- 				data: {
- 					api_key: '8a92833b6f0e0a614c460724797ccc79', // our key is limited to 40 calls every 10 seconds.
- 					format: 'json',
- 					sort_by: 'popularity.desc', //puts most popular movies at the top
- 					primary_release_year: year //movies from this year
- 				}
- 			})
- 			
+ 			url: 'https://api.themoviedb.org/3/discover/movie',
+ 			type: 'GET',
+ 			dataType: 'JSON',
+ 			data: {
+ 				api_key: '8a92833b6f0e0a614c460724797ccc79', // our key is limited to 40 calls every 10 seconds.
+ 				format: 'json',
+ 				sort_by: 'popularity.desc', //puts most popular movies at the top
+ 				primary_release_year: year //movies from this year
+ 			}
+ 		})
+
  	}
 
- 	quizApp.getCasts = function() {
+ 	quizApp.getCasts = function(movieId) { //takes movie id, gets cast and crew for that movie
  		return $.ajax({
- 				// **345678 placeholder until we get the movie id
- 				url: 'https://api.themoviedb.org/3/movie/345678/casts',
- 				type: 'GET',
- 				dataType: 'JSON',
- 				data: {
- 					api_key: '8a92833b6f0e0a614c460724797ccc79'
- 				},
- 			})
+ 			url: `https://api.themoviedb.org/3/movie/${movieId}/casts`,
+ 			type: 'GET',
+ 			dataType: 'JSON',
+ 			data: {
+ 				api_key: '8a92833b6f0e0a614c460724797ccc79'
+ 			},
+ 		})
  	}
 
  	quizApp.events = () => {
@@ -34,26 +33,27 @@
  			let year = ($('#yearSelection').val() * 1);
  			// Make an ajax call for the following nine years after #yearSelection
  			quizApp.movieChecks = [];
- 			
+
  			for (i = 0; i < 10; i++) {
  				quizApp.movieChecks.push(quizApp.getMovies(year));
  				// console.log("Hello", year);
  				year = year + 1;
  			}
- 			$.when(...quizApp.movieChecks).done((...results)=>{
+ 			$.when(...quizApp.movieChecks).done((...results) => {
  				// console.log(results);
- 				let betterArray = results.map((array)=> {
+ 				let betterArray = results.map((array) => {
  					return array[0].results;
  				})
  				let finalArray = [];
  				betterArray.forEach((movieGroup) => {
- 					movieGroup.forEach((movie)=> {
- 						finalArray.push(movie);
- 					})
- 				}) //end of double loop
+ 						movieGroup.forEach((movie) => {
+ 							finalArray.push(movie);
+ 						})
+ 					}) //end of double loop
  				quizApp.moviedata = finalArray;
+ 				quizApp.generateCastData();
  			});
- 			
+
  		});
  	}
 
@@ -165,17 +165,17 @@
  	quizApp.questionDescription = function(descriptionObject) {
  		let actualTitle = descriptionObject.title;
  		let description = descriptionObject.description;
- 		let fakeTitles = [];
+ 		let wrongAnswers = [];
  		let movieObject = quizApp.moviedata; //This needs to target the results of our ajax request
  		let randoNum = Math.floor(Math.random() * (movieObject.length - 4)) + 1
  		for (var i = 0; i < 4; i++) {
  			let randoIndex = randoNum + i
- 			fakeTitles.push(movieObject[randoIndex].title)
+ 			wrongAnswers.push(movieObject[randoIndex].title)
  		}
- 		let allTitles = fakeTitles;
+ 		let allTitles = wrongAnswers;
  		allTitles.push(actualTitle);
  		const questionObject = {
- 			fakeTitles: fakeTitles,
+ 			wrongAnswers: wrongAnswers,
  			answer: actualTitle,
  			allTitles: allTitles,
  			question: 'Name the movie that this text is describing!',
@@ -196,7 +196,40 @@
  		return questionObject;
  	}
 
+ 	quizApp.pickFiveMovies = function() {
+ 		let theMovies = [];
+ 		for (var i = 0; i < 5; i++) { //do this 5 times
+ 			let randoNum = Math.floor(Math.random() * (quizApp.moviedata.length)) + 1
+ 			theMovies.push(quizApp.moviedata[randoNum]);
+ 		}
+ 		return theMovies;
+ 	}
+
+ 	quizApp.getCastForFiveMovies = function(theMoviesArray) {
+ 		quizApp.castdata = {};
+ 		theMoviesArray.forEach((movie) => {
+ 			let movieId = movie.id;
+ 			let movieTitle = movie.title;
+ 			let castCheck = quizApp.getCasts(movieId);
+ 			$.when(castCheck).done((data)=> {
+ 				// console.log(data);
+ 				quizApp.castdata[movieTitle] = data;
+ 			});
+ 		})
+ 	}
+
+ 	quizApp.generateCastData = function() {
+ 		let fiveMovies = quizApp.pickFiveMovies();
+ 		quizApp.getCastForFiveMovies(fiveMovies);
+ 	}
+
 
  	$(function() {
  		quizApp.init();
  	});
+
+ 	//Cast Data
+ 	//choose 5 movies to make calls (pickFiveMovies())
+ 	//make ajax request for cast data with data from movie array (randomly)
+ 	//repeat 5 times
+ 	//store in app property for questionification
