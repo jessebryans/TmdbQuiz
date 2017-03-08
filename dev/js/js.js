@@ -8,7 +8,6 @@
 			data: {
 				api_key: '8a92833b6f0e0a614c460724797ccc79',
 				sort_by: 'popularity.desc',
-				feilds: 'person',
 				primary_release_year: '2015'
 			},
 		})
