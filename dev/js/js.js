@@ -7,24 +7,24 @@
 			dataType: 'JSON',
 			data: {
 				api_key: '8a92833b6f0e0a614c460724797ccc79',
-				format: 'json',
-				limit: 50
-				// sort_by: 'popularity.desc'
+				format: 'json'
+				// sort_by: 'popularity.desc',
 				// primary_release_year: '2015'
 			}
 		})
-		// .done(function(data) {
-		// 	console.log("success");
-		// 	console.log(data)
-		// })
-		// .fail(function() {
-		// 	console.log("error");
-		// })
-		// .always(function() {
-		// 	console.log("complete");
+		.done(function(data) {
+			console.log("success");
+			console.log(data)
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		})
 		.then(function(data) {
-			console.log(data);
-		};
+			// console.log(data);
+		});
 		
 	}
 
@@ -38,42 +38,70 @@
 		/************
 		INTRO
 		************/
-		/*get the decade from the user (select decade button)
-			on click event that listens to the input box, radio buttons or dropdown list
-				-
+		/* Get the decade from the user
+			on click event that listens to the select/text input
+		*/
+		/* Call ajax function to get movie data from chosen decade (maybe different ajax calls)
 		*/
 
-		/*contact database get movie data from chosen decade (maybe different ajax calls)
-		*/
+		/* on.submit (Generate categories, generate questions, shuffle, Play Game!)
+			Categories (ideas): 
+				- Big budget films
+				- Box office flops
+				- Classics
+				- Award-winning films
+				- by Genre (sci-fi, horror, comedy, animated, doc, shorts)
+			Questions (ideas):
+				- Which movie starred actors X and Y
+				- Name one of the actors that starred in movie Z
+				- Multiple choice questions!
+			Function for shuffling questions/categories:
+				(Shuffles the arrays)
+				
+				function shuffle(questions) {
+				  var m = questions.length, t, i;
+				  while (m) {
+				    i = Math.floor(Math.random() * m--);
+				    t = questions[m];
+				    questions[m] = questions[i];
+				    questions[i] = t;
+				  }
+				  return questions;
+				}
 
-		// on.submit (Play Game!)
-
+				Calls the shuffle to run
+				questions = shuffle(questions);
+		*/	
 
 		/************
 		GAME WINDOW
 		************/
 		
-		// quizApp.getQuestions(function() {
-			// generate questions from 6 categories (some how???)
-			//questions about which movie starred actors X and Y
-			//or name one of the actors that starred in movie Z
-			//or even multiple choice questions!
-		// });
-		// generate html from questions
-		// user clicks question tile for pop-up window (overlay)
-		
+		// Insert Questions function:
+		// user clicks question tile and is prompted with an overlay
+			// Overlay can contain question, answer box or buttons and pass/submit
+
 		/*SCORE BOARD*/
 		//generate users score
 		//for every right answer increase score
 		// for every wrong answer decrease score
 
 		/*****************************
-		Key Properties to use
-		- popularity
-		- vote_average
-		- release_date
-		- overview
-		- original_title (for the movie title)
+		Movie Data Available (property names):
+			adult
+			backdrop_path
+			genre_ids
+			id
+			original_language
+			original_title
+			overview
+			popularity
+			poster_path
+			release_date
+			title
+			video
+			vote_average
+			vote_count
 		*****************************/
 	};
 
