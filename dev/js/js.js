@@ -1,4 +1,4 @@
-	const quizApp = {};
+ 	const quizApp = {};
 
 	quizApp.getMovies = function() {
 		$.ajax({
@@ -23,7 +23,6 @@
 				console.log("complete");
 			})
 
-	}
 
 
 
@@ -99,6 +98,8 @@
 			vote_count
 		*****************************/
 	};
+
+	//just for testing purposes!!
 	quizApp.testOverview1 = "Twenty-two years after the events of Jurassic Park, Isla Nublar now features a fully functioning dinosaur theme park, Jurassic World, as originally envisioned by John Hammond.";
 	quizApp.testTitle1 = "Jurassic World"
 
@@ -107,8 +108,8 @@
 
 	quizApp.testOverview3 = 'In a universe where human genetic material is the most precious commodity, an impoverished young Earth woman becomes the key to strategic maneuvers and internal strife within a powerful dynasty…';
 	quizApp.testTitle3 = 'Jupiter Ascending'
-
-
+//var test = quizApp.removeTitleFromDescription(quizApp.testOverview2,quizApp.testTitle2)
+//end testing stuff
 
 	quizApp.removeTitleFromDescription = function(description, title) {
 		let titleWords = title;
