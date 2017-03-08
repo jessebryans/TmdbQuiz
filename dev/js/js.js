@@ -152,6 +152,15 @@
 		return questionObject;
 	}
 
+	quizApp.generateRandomDescQuestion = function(){
+		let movieObject = quizApp.moviedata;
+		let answerMovieIndex = Math.floor(Math.random() * (movieObject.length)) + 1;
+		let randomMovieEntry = movieObject[answerMovieIndex];
+		let cleanDescription = quizApp.removeTitleFromDescription(randomMovieEntry.overview,randomMovieEntry.title)
+		let questionObject = quizApp.questionDescription(cleanDescription);
+		console.log(questionObject);
+	}
+
 
 	$(function() {
 		quizApp.init();
