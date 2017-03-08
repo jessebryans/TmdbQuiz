@@ -2,35 +2,34 @@
 
 	quizApp.getMovies = function() {
 		$.ajax({
-			url: 'https://api.themoviedb.org/3/discover/movie',
-			type: 'GET',
-			dataType: 'JSON',
-			data: {
-				api_key: '8a92833b6f0e0a614c460724797ccc79', // our key is limited to 40 calls every 10 seconds.
-				format: 'json'
-				sort_by: 'popularity.desc', //puts most popular movies at the top
-				primary_release_year: '2015' //movies from this year
-			}
-		})
-		.done(function(data) { //runs if ajax calls works
-			console.log("success");
-			console.log(data)
-		})
-		.fail(function() { //runs if ajax call fails
-			console.log("error");
-		})
-		.always(function() { //runs no matter what
-			console.log("complete");
-		})
-		
+				url: 'https://api.themoviedb.org/3/discover/movie',
+				type: 'GET',
+				dataType: 'JSON',
+				data: {
+					api_key: '8a92833b6f0e0a614c460724797ccc79', // our key is limited to 40 calls every 10 seconds.
+					format: 'json',
+					sort_by: 'popularity.desc', //puts most popular movies at the top
+					primary_release_year: '2015' //movies from this year
+				}
+			})
+			.done(function(data) { //runs if ajax calls works
+				console.log("success");
+				console.log(data)
+			})
+			.fail(function() { //runs if ajax call fails
+				console.log("error");
+			})
+			.always(function() { //runs no matter what
+				console.log("complete");
+			})
+
 	}
-
-
 
 
 
 	quizApp.init = function() {
 		quizApp.getMovies();
+		quizApp.questionTest(quizApp.testOverview3, quizApp.testTitle3);
 		/************
 		INTRO
 		************/
@@ -38,7 +37,7 @@
 			on click event that listens to the select/text input
 		*/
 		/* Call ajax function to get movie data from chosen decade (maybe different ajax calls)
-		*/
+		 */
 
 		/* on.submit (Generate categories, generate questions, shuffle, Play Game!)
 			Categories (ideas): 
@@ -67,15 +66,15 @@
 
 				Calls the shuffle to run
 				questions = shuffle(questions);
-		*/	
+		*/
 
 		/************
 		GAME WINDOW
 		************/
-		
+
 		// Insert Questions function:
 		// user clicks question tile and is prompted with an overlay
-			// Overlay can contain question, answer box or buttons and pass/submit
+		// Overlay can contain question, answer box or buttons and pass/submit
 
 		/*SCORE BOARD*/
 		//generate users score
@@ -100,8 +99,29 @@
 			vote_count
 		*****************************/
 	};
+	quizApp.testOverview1 = "Twenty-two years after the events of Jurassic Park, Isla Nublar now features a fully functioning dinosaur theme park, Jurassic World, as originally envisioned by John Hammond.";
+	quizApp.testTitle1 = "Jurassic World"
+
+	quizApp.testOverview2 = "An apocalyptic story set in the furthest reaches of our planet, in a stark desert landscape where humanity is broken, and most everyone is crazed fighting for the necessities of life. Within this world exist two rebels on the run who just might be able to restore order. There's Max, a man of action and a man of few words, who seeks peace of mind following the loss of his wife and child in the aftermath of the chaos. And Furiosa, a woman of action and a woman who believes her path to survival may be achieved if she can make it across the desert back to her childhood homeland.";
+	quizApp.testTitle2 = 'Mad Max: Fury Road'
+
+	quizApp.testOverview3 = 'In a universe where human genetic material is the most precious commodity, an impoverished young Earth woman becomes the key to strategic maneuvers and internal strife within a powerful dynasty…';
+	quizApp.testTitle3 = 'Jupiter Ascending'
 
 
+
+	quizApp.removeTitleFromDescription = function(description, title) {
+		let titleWords = title;
+		var newDescription = description;
+		titleWords = titleWords.split(' '); //splits the title into an array of words
+		titleWords.forEach((word, index) => { //removes non alphanumeric characters from each word (IE Max: becomes Max)
+
+			titleWords[index] = titleWords[index].replace(/\W/g, '');
+			newDescription = newDescription.replace(new RegExp(titleWords[index], 'gi'), '*Blank*');
+
+		});
+		return newDescription;
+	}
 
 
 	$(function() {
