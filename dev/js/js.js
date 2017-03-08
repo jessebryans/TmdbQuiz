@@ -165,17 +165,17 @@
  	quizApp.questionDescription = function(descriptionObject) {
  		let actualTitle = descriptionObject.title;
  		let description = descriptionObject.description;
- 		let fakeTitles = [];
+ 		let wrongAnswers = [];
  		let movieObject = quizApp.moviedata; //This needs to target the results of our ajax request
  		let randoNum = Math.floor(Math.random() * (movieObject.length - 4)) + 1
  		for (var i = 0; i < 4; i++) {
  			let randoIndex = randoNum + i
- 			fakeTitles.push(movieObject[randoIndex].title)
+ 			wrongAnswers.push(movieObject[randoIndex].title)
  		}
- 		let allTitles = fakeTitles;
+ 		let allTitles = wrongAnswers;
  		allTitles.push(actualTitle);
  		const questionObject = {
- 			fakeTitles: fakeTitles,
+ 			wrongAnswers: wrongAnswers,
  			answer: actualTitle,
  			allTitles: allTitles,
  			question: 'Name the movie that this text is describing!',
