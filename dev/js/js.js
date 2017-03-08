@@ -6,25 +6,22 @@
 			type: 'GET',
 			dataType: 'JSON',
 			data: {
-				api_key: '8a92833b6f0e0a614c460724797ccc79',
+				api_key: '8a92833b6f0e0a614c460724797ccc79', // our key is limited to 40 calls every 10 seconds.
 				format: 'json'
-				// sort_by: 'popularity.desc',
-				// primary_release_year: '2015'
+				sort_by: 'popularity.desc', //puts most popular movies at the top
+				primary_release_year: '2015' //movies from this year
 			}
 		})
-		.done(function(data) {
+		.done(function(data) { //runs if ajax calls works
 			console.log("success");
 			console.log(data)
 		})
-		.fail(function() {
+		.fail(function() { //runs if ajax call fails
 			console.log("error");
 		})
-		.always(function() {
+		.always(function() { //runs no matter what
 			console.log("complete");
 		})
-		.then(function(data) {
-			// console.log(data);
-		});
 		
 	}
 
@@ -34,7 +31,6 @@
 
 	quizApp.init = function() {
 		quizApp.getMovies();
-		console.log("success!");
 		/************
 		INTRO
 		************/
