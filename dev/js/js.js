@@ -1,33 +1,73 @@
  	const quizApp = {};
 
-	quizApp.getMovies = function() {
+	quizApp.getMovies = function(year) {
 		$.ajax({
-				url: 'https://api.themoviedb.org/3/discover/movie',
-				type: 'GET',
-				dataType: 'JSON',
-				data: {
-					api_key: '8a92833b6f0e0a614c460724797ccc79', // our key is limited to 40 calls every 10 seconds.
-					format: 'json',
-					sort_by: 'popularity.desc', //puts most popular movies at the top
-					primary_release_year: '2015' //movies from this year
-				}
-			})
-			.done(function(data) { //runs if ajax calls works
-				console.log("success");
-				quizApp.moviedata = data.results;
-			})
-			.fail(function() { //runs if ajax call fails
-				console.log("error");
-			})
-			.always(function() { //runs no matter what
-				console.log("complete");
-			})
+			url: 'https://api.themoviedb.org/3/discover/movie',
+			type: 'GET',
+			dataType: 'JSON',
+			data: {
+				api_key: '8a92833b6f0e0a614c460724797ccc79', // our key is limited to 40 calls every 10 seconds.
+				format: 'json',
+				sort_by: 'popularity.desc', //puts most popular movies at the top
+				primary_release_year: year //movies from this year
+			}
+		})
+		.done(function(data) {
+			console.log("success");
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		})
+		.then(function(data) {
+			console.log(data);
+		});
+		
+	}
+
+	quizApp.getCasts = function() {
+		$.ajax({
+			// **345678 placeholder until we get the movie id
+			url: 'https://api.themoviedb.org/3/movie/345678/casts',
+			type: 'GET',
+			dataType: 'JSON',
+			data: {
+				api_key: '8a92833b6f0e0a614c460724797ccc79'
+			},
+		})
+		.done(function(data) { //runs if ajax calls works
+			console.log("success");
+			quizApp.moviedata = data.results;
+		})
+		.fail(function() { //runs if ajax call fails
+			console.log("error");
+		})
+		.always(function() { //runs no matter what
+			console.log("complete");
+		});
+	}
+
+quizApp.events = () => {
+	$('#submitButton').on('click', (e) => {
+		e.preventDefault();
+		// Multiplied value by one to coerce string into number
+		let year = ($('#yearSelection').val()*1);
+		// Make an ajax call for the following nine years after #yearSelection
+		for (i = 0; i < 10; i++) {
+			quizApp.getMovies(year);
+			console.log("Hello", year);
+			year = year + 1;
+		}
+	});
 }
 
 
-
 	quizApp.init = function() {
+		quizApp.events();
 		quizApp.getMovies();
+
 		// quizApp.questionTest(quizApp.testOverview3, quizApp.testTitle3);
 		/************
 		INTRO
