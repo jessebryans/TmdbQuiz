@@ -51,7 +51,7 @@
  				year = year + 1;
  			}
  			$.when(...quizApp.movieChecks).done((...results)=>{
- 				// console.log(results);
+ 				console.log(results);
  				let betterArray = results.map((array)=> {
  					return array[0].results;
  				})
@@ -204,6 +204,14 @@
  		let questionObject = quizApp.questionDescription(cleanDescription);
  		console.log(questionObject);
  		return questionObject;
+ 	}
+
+
+
+ 	quizApp.getPopularMovies = function() {
+ 		// let movieObject = quizApp.moviedata;
+ 		// 
+
  	}
 
 
