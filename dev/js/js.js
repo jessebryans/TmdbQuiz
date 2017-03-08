@@ -22,7 +22,7 @@
 			.always(function() { //runs no matter what
 				console.log("complete");
 			})
-
+}
 
 
 
