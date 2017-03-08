@@ -14,7 +14,7 @@
 			})
 			.done(function(data) { //runs if ajax calls works
 				console.log("success");
-				console.log(data)
+				quizApp.moviedata = data.results;
 			})
 			.fail(function() { //runs if ajax call fails
 				console.log("error");
@@ -29,7 +29,7 @@
 
 	quizApp.init = function() {
 		quizApp.getMovies();
-		quizApp.questionTest(quizApp.testOverview3, quizApp.testTitle3);
+		// quizApp.questionTest(quizApp.testOverview3, quizApp.testTitle3);
 		/************
 		INTRO
 		************/
@@ -120,7 +120,35 @@
 			newDescription = newDescription.replace(new RegExp(titleWords[index], 'gi'), '*Blank*');
 
 		});
-		return newDescription;
+		return {
+			description: newDescription,
+			title: title,
+			origDec: description
+		};
+	}
+
+	quizApp.questionDescription = function(descriptionObject) {
+		let actualTitle = descriptionObject.title;
+		let description = descriptionObject.description;
+		let fakeTitles = [];
+		let movieObject = quizApp.moviedata; //This needs to target the results of our ajax request
+		let randoNum = Math.floor(Math.random() * (movieObject.length - 4)) + 1
+		for (var i = 0; i < 4; i++) {
+			let randoIndex = randoNum + i
+			fakeTitles.push(movieObject[randoIndex].title)
+		}
+		let allTitles = fakeTitles;
+		allTitles.push(actualTitle);
+		const questionObject = {
+			fakeTitles: fakeTitles,
+			answer: actualTitle,
+			allTitles: allTitles,
+			question: 'Name the movie that this text is describing!',
+			type: 'multipleChoice',
+			descriptionBlanked: description,
+			origDesc: descriptionObject.origDesc
+		}
+		return questionObject;
 	}
 
 
