@@ -199,6 +199,7 @@ quizApp.events = () => {
 		let cleanDescription = quizApp.removeTitleFromDescription(randomMovieEntry.overview,randomMovieEntry.title)
 		let questionObject = quizApp.questionDescription(cleanDescription);
 		console.log(questionObject);
+		return questionObject;
 	}
 
 
