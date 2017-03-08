@@ -1,4 +1,4 @@
-	const quizApp = {};
+ 	const quizApp = {};
 
 	quizApp.getMovies = function() {
 		$.ajax({
@@ -28,6 +28,27 @@
 		
 	}
 
+	quizApp.getActors = function() {
+		$.ajax({
+			// **345678 placeholder until we get the movie id
+			url: 'https://api.themoviedb.org/3/movie/345678/casts',
+			type: 'GET',
+			dataType: 'JSON',
+			data: {
+				api_key: '8a92833b6f0e0a614c460724797ccc79'
+			},
+		})
+		.done(function(data) {
+			console.log("success");
+			console.log(data)
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+	}
 
 
 
