@@ -25,16 +25,6 @@
  					api_key: '8a92833b6f0e0a614c460724797ccc79'
  				},
  			})
- 			.done(function(data) { //runs if ajax calls works
- 				console.log("success");
- 				quizApp.moviedata = data.results;
- 			})
- 			.fail(function() { //runs if ajax call fails
- 				console.log("error");
- 			})
- 			.always(function() { //runs no matter what
- 				console.log("complete");
- 			});
  	}
 
  	quizApp.events = () => {
@@ -61,7 +51,7 @@
  						finalArray.push(movie);
  					})
  				}) //end of double loop
- 				quizApp.movieData = finalArray;
+ 				quizApp.moviedata = finalArray;
  			});
  			
  		});
