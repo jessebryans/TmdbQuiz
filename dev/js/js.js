@@ -1,20 +1,19 @@
  	const quizApp = {};
 
-	quizApp.getMovies = function() {
+	quizApp.getMovies = function(year) {
 		$.ajax({
 			url: 'https://api.themoviedb.org/3/discover/movie',
 			type: 'GET',
 			dataType: 'JSON',
 			data: {
 				api_key: '8a92833b6f0e0a614c460724797ccc79',
-				format: 'json'
+				format: 'json',
 				// sort_by: 'popularity.desc',
-				// primary_release_year: '2015'
+				primary_release_year: year
 			}
 		})
 		.done(function(data) {
 			console.log("success");
-			console.log(data)
 		})
 		.fail(function() {
 			console.log("error");
@@ -23,12 +22,12 @@
 			console.log("complete");
 		})
 		.then(function(data) {
-			// console.log(data);
+			console.log(data);
 		});
 		
 	}
 
-	quizApp.getActors = function() {
+	quizApp.getCasts = function() {
 		$.ajax({
 			// **345678 placeholder until we get the movie id
 			url: 'https://api.themoviedb.org/3/movie/345678/casts',
@@ -40,22 +39,36 @@
 		})
 		.done(function(data) {
 			console.log("success");
-			console.log(data)
 		})
 		.fail(function() {
 			console.log("error");
 		})
 		.always(function() {
 			console.log("complete");
+			// console.log(data);
 		});
 	}
 
+quizApp.events = () => {
+	$('#submitButton').on('click', (e) => {
+		e.preventDefault();
+		// Multiplied value by one to coerce string into number
+		let year = ($('#yearSelection').val()*1);
+		// Make an ajax call for the following nine years after #yearSelection
+		for (i = 0; i < 10; i++) {
+			quizApp.getMovies(year);
+			console.log("Hello", year);
+			year = year + 1;
+		}
+	});
+}
 
 
 
 	quizApp.init = function() {
+		quizApp.events();
 		quizApp.getMovies();
-		console.log("success!");
+
 		/************
 		INTRO
 		************/
