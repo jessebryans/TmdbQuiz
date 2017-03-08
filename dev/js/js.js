@@ -196,6 +196,31 @@
  		return questionObject;
  	}
 
+	quizApp.leadActor = function(castIndex) {
+		let castDataKeys = Object.keys(quizApp.castdata)
+		let movieCast = quizApp.castdata[castDataKeys[castIndex]] // maybe not???
+		let LeadActor = movieCast.cast[0].name
+		console.log(LeadActor)
+	};
+
+	quizApp.wrongAnswers = function() {
+
+	};
+
+  // 	quizApp.generateRandomCastQuestion = function() {
+ 	// 	let answer = quizApp.leadActor() // need to write function that gets lead actor
+ 	// 	let wrongAnswers =quizApp.wrongAnswers //need to write function that gets wrong answers
+
+
+ 	// 	const questionObject = {
+ 	// 		wrongAnswers: ,
+ 	// 		answer: ,
+ 	// 		question: 'Which one of these actors is the lead?', /// CHANGE
+ 	// 		type:'multipleChoice' ,
+ 			 
+ 	// 	}
+ 	// };
+
  	quizApp.pickFiveMovies = function() {
  		let theMovies = [];
  		for (var i = 0; i < 5; i++) { //do this 5 times
@@ -224,12 +249,13 @@
  	}
 
 
+
+
  	$(function() {
  		quizApp.init();
  	});
 
- 	//Cast Data
- 	//choose 5 movies to make calls (pickFiveMovies())
- 	//make ajax request for cast data with data from movie array (randomly)
- 	//repeat 5 times
- 	//store in app property for questionification
+ 	//of the five random movies we need the name of the film and the top actor
+ 	//generate wrong answers for quiz
+ 	//and then write the question program
+
