@@ -148,7 +148,7 @@
  	quizApp.removeTitleFromDescription = function(description, title) {
  		let titleWords = title;
  		var newDescription = description;
- 		titleWords = titleWords.split(' '); //splits the title into an array of words
+ 		titleWords = titleWords.split(''); //splits the title into an array of words
  		titleWords.forEach((word, index) => { //removes non alphanumeric characters from each word (IE Max: becomes Max)
 
  			titleWords[index] = titleWords[index].replace(/\W/g, '');
@@ -233,3 +233,53 @@
  	//make ajax request for cast data with data from movie array (randomly)
  	//repeat 5 times
  	//store in app property for questionification
+
+ 	//RELEASE_DATE QUESTIONS
+
+ 	 //pick random movie  from array
+
+ 	 quizApp.generateYear = function() {
+ 	 	let max = quizApp.moviedata.length;
+ 	 	let min = 0;
+ 	 	let randomNum = Math.floor(Math.random() * (max - min + 1));
+
+ 	 	//generated movies for random year
+ 	 	let movieByYearAnswer = quizApp.moviedata[randomNum];
+
+ 	 	//get relase date from movie
+ 	 	let correctReleaseDate = movieByYearAnswer.release_date;
+ 	 	//slicing it to only get the year and not the month and day
+ 	 	let yearNum = (correctReleaseDate.slice(0,4) * 1);
+ 	 	// console.log(yearNum)
+ 	 	quizApp.generateWrongYears(yearNum);
+ 	 };
+
+ 	//create wrong answers
+ 	quizApp.generateWrongYears = function(correctAnswer) {
+ 		let wrongAnswers = [];
+ 		let max = 5;
+ 		let min = 1
+ 		for (var i = 0; wrongAnswers.length < 3; i++) {
+ 			let randoNum = Math.floor(Math.random() * (max - min + 1));
+ 			let randomNumlower = Math.floor(Math.random() * (2 - 1 + 1));
+ 			let wrongAnswer;
+ 			if(randomNumlower === 1) {
+ 				wrongAnswer = correctAnswer + randoNum;
+ 			}else {
+ 				wrongAnswer = correctAnswer - randoNum;
+ 			} 
+ 			let isUnique = true;
+
+ 			wrongAnswers.forEach(function(year){
+ 				if(year === wrongAnswer) {
+ 					isUnique = false;
+ 				}
+ 			})
+ 			if(isUnique === true) {
+ 				wrongAnswers.push(wrongAnswer) 			
+ 			}
+ 			
+ 		}console.log(wrongAnswers)
+ 	}
+
+ 	//return info in object
