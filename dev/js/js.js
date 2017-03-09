@@ -52,13 +52,7 @@
  					}) //end of double loop
  				quizApp.moviedata = finalArray;
  				quizApp.generateCastData();
- 				quizApp.generateRandomCastQuestion();
  			});
-<<<<<<< HEAD
-
-
-=======
->>>>>>> d02278a60223e250f2a4862d9083fe757b8af42e
  		});
  	}
 
@@ -120,71 +114,6 @@
  		return questionObject;
  	}
 
-	quizApp.leadActor = function(castIndex) { //gets lead actor for correct movie 
-		
-		let castDataKeys = Object.keys(quizApp.castdata)
-		let movieCast = quizApp.castdata[castDataKeys[castIndex]] // maybe not???
-		let leadActor = movieCast.cast[0].name
-		// console.log('leadActor:', leadActor)
-		return leadActor;
-	};
-
-
-
-
-	quizApp.wrongAnswers = function(wrongIndex) {
-		let wrongMovieCast = [];
-		let castDataKeys = Object.keys(quizApp.castdata)
-		// console.log('wrong index:', wrongIndex)
-		// console.log('castDataKeys:', castDataKeys)
-		console.log('castdata:', quizApp.castdata)
-		let movieCast = quizApp.castdata[castDataKeys[wrongIndex]]
-		// console.log('movieCast:', movieCast)
-		for (var i = 1; i < 5; i++) {
-			
-			let wrongActors = movieCast.cast[i].name
-			wrongMovieCast.push(wrongActors)
-			} 
-			return wrongMovieCast;	
-		}// let incorrectActors = wrongMovieCast;
-	
-
-	 	
-
-  	quizApp.generateRandomCastQuestion = () => {
-  		let arrayOfQuestions = [];
-  		for (var i = 0; i < 4; i++) {
-  			let question = quizApp.getCastQuestion(i);
-  			arrayOfQuestions.push(question)
-
- 		
- 		}
- 		console.log(arrayOfQuestions);
- 			
- 		}
-
- 		quizApp.getCastQuestion = function(i) {
- 			  		
- 		let correctActor = quizApp.leadActor(i);
-		let wrongArray = quizApp.wrongAnswers(i);
-		return {
-			answer: correctActor,
-			wrongAnswers: wrongArray
-		}
- 		}
- 		
- 		// let allActors = wrongActors;
- 		// allActors.push(actualActor);
- 		// const questionObject = {
- 		// 	wrongAnswers: wrongAnswers,
- 		// 	answer: actualActor,
- 		// 	allActors: allActors,
- 		// 	question: 'Name the actor or actress that stars in this movie!',
- 		// 	type: 'multipleChoice'
- 		// }
- 		// // return questionObject;
- 	
-
  	quizApp.pickFiveMovies = function() {
  		let theMovies = [];
  		for (var i = 0; i < 5; i++) { //do this 5 times
@@ -210,36 +139,22 @@
  				quizApp.castdata[movieTitle].title = movieTitle;
  			});
  		})
-<<<<<<< HEAD
-
-
-=======
  		$.when(...quizApp.castCheckArray).done(function() {
  			quizApp.generateCastQuestionsArray()
  		});
->>>>>>> d02278a60223e250f2a4862d9083fe757b8af42e
 
  	}
 
  	quizApp.generateCastData = function() {
  		let fiveMovies = quizApp.pickFiveMovies();
  		quizApp.getCastForFiveMovies(fiveMovies);
-
  	}
-
-
 
 
  	$(function() {
  		quizApp.init();
  	});
 
-<<<<<<< HEAD
- 	//of the five random movies we need the name of the film and the top actor
- 	//generate wrong answers for quiz
- 	//and then write the question program
-
-=======
  	quizApp.generateYear = function() {
  		let max = quizApp.moviedata.length;
  		let min = 0;
@@ -340,4 +255,3 @@
  		quizApp.castQuestions = castQuestionArray;
  		return castQuestionArray
  	}
->>>>>>> d02278a60223e250f2a4862d9083fe757b8af42e
