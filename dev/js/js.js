@@ -225,10 +225,17 @@
 
 
 
- 	quizApp.getPopularMovies = function() {
- 		// let movieObject = quizApp.moviedata;
- 		// 
+ 	quizApp.fanFavourites = function() {
+ 		// Push the top five movies into an array
+ 		let topFiveMovies = [];
 
+ 		for (let i = 0; i < 5; i++) {
+ 			topFiveMovies.push(quizApp.moviedata[i].id);
+ 		}
+ 		console.log(topFiveMovies);
+
+ 		// Pull the first (main) character object from the credits of that movie
+ 		
  	}
 
 
@@ -241,3 +248,9 @@
  	//make ajax request for cast data with data from movie array (randomly)
  	//repeat 5 times
  	//store in app property for questionification
+
+
+ 	// Which Actor starred in this movie? - Question
+		// Choose random movie
+		// Store main actor and movie title into an object
+		// 
