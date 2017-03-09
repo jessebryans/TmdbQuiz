@@ -199,13 +199,21 @@
 	quizApp.leadActor = function(castIndex) {
 		let castDataKeys = Object.keys(quizApp.castdata)
 		let movieCast = quizApp.castdata[castDataKeys[castIndex]] // maybe not???
-		let LeadActor = movieCast.cast[0].name
-		console.log(LeadActor)
+		let leadActor = movieCast.cast[0].name
+		console.log(leadActor)
 	};
 
-	quizApp.wrongAnswers = function() {
+	quizApp.wrongAnswers = function(wrongIndex) {
+		let wrongMovieCast = [];
+		let castDataKeys = Object.keys(quizApp.castdata)
+		let movieCast = quizApp.castdata[castDataKeys[wrongIndex]]
+		for (var i = 1; i < 4; i++) {
+		let leadActor = movieCast.cast[i].name
+		wrongMovieCast.push(leadActor)
+			
 
-	};
+		}console.log(wrongMovieCast)
+	}
 
   // 	quizApp.generateRandomCastQuestion = function() {
  	// 	let answer = quizApp.leadActor() // need to write function that gets lead actor
