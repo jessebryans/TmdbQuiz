@@ -52,9 +52,16 @@
  					}) //end of double loop
  				quizApp.moviedata = finalArray;
  				quizApp.generateCastData();
+
  			});
 
  		});
+
+ 		$('.question10').on('click', function(e) {
+ 			e.preventDefault();
+ 			quizApp.displayQuestion(quizApp.generateYear());
+ 		});
+
  	}
 
 
@@ -261,12 +268,13 @@
  			wrongAnswers: wrongAnswers,
  			answer: yearNum,
  			allYears: allYears,
- 			question: 'Which year was this movie release?',
+ 			question: 'Which year was this movie released?',
  			type: 'multipleChoice',
  			movie: movieByYearAnswer,
  			title: movieByYearAnswer.title
  		}
  		return questionObject;
+
  	 };
 
  	//create wrong answers
@@ -297,5 +305,17 @@
  		}
  		return wrongAnswers; 
  	}
+
+ 	//Displaying Question
+
+ 	quizApp.displayQuestion = (question) => {
+ 		$('.questions__text').empty('');
+ 		$('.questions__text').append(quizApp.generateYear().question);
+
+ 		// console.log(quizApp.generateYear().question);
+ 		var multiButtons = Math.floor(Math.random() * quizApp.generateYear().allYears;
+ 		console.log(multiButtons)
+ 	}
+
 
  	//return info in object
