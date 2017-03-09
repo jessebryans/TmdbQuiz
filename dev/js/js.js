@@ -207,27 +207,37 @@
 		let wrongMovieCast = [];
 		let castDataKeys = Object.keys(quizApp.castdata)
 		let movieCast = quizApp.castdata[castDataKeys[wrongIndex]]
-		for (var i = 1; i < 4; i++) {
-		let leadActor = movieCast.cast[i].name
-		wrongMovieCast.push(leadActor)
-			
+		for (var i = 1; i < 5; i++) {
+		let wrongActors = movieCast.cast[i].name
 
-		}console.log(wrongMovieCast)
+		console.log(wrongActors)
+
+		}
+		let incorrectActors = wrongMovieCast;
+		incorrectActors.push(leadActor)
 	}
 
-  // 	quizApp.generateRandomCastQuestion = function() {
- 	// 	let answer = quizApp.leadActor() // need to write function that gets lead actor
- 	// 	let wrongAnswers =quizApp.wrongAnswers //need to write function that gets wrong answers
-
-
- 	// 	const questionObject = {
- 	// 		wrongAnswers: ,
- 	// 		answer: ,
- 	// 		question: 'Which one of these actors is the lead?', /// CHANGE
- 	// 		type:'multipleChoice' ,
- 			 
- 	// 	}
- 	// };
+  	quizApp.generateRandomCastQuestion = () => {
+ 		// let wrongAnswers = quizApp.wrongAnswers() //need to write function that gets wrong answers
+ 		let actualActor = quizApp.leadActor(1) // need to write function that gets lead actor
+ 		let wrongAnswers = [];
+ 		let castDataKeys =  Object.keys(quizApp.castdata)
+ 		let randoNum = Math.floor(Math.random() * (castDataKeys.length - 4)) + 1
+ 		for (var i = 0; i < 4; i++) {
+ 			let randoIndex = randoNum + i
+ 			wrongAnswers.push(castDataKeys[randoIndex].title)
+ 		}
+ 		let allActors = wrongActors;
+ 		allActors.push(actualActor);
+ 		const questionObject = {
+ 			wrongAnswers: wrongAnswers,
+ 			answer: actualActor,
+ 			allTitles: allActors,
+ 			question: 'Name the actor or actress that stars in this movie!',
+ 			type: 'multipleChoice'
+ 		}
+ 		return questionObject;
+ 	};
 
  	quizApp.pickFiveMovies = function() {
  		let theMovies = [];
