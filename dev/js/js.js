@@ -53,97 +53,15 @@
  				quizApp.moviedata = finalArray;
  				quizApp.generateCastData();
  			});
-
  		});
  	}
 
 
  	quizApp.init = function() {
  		quizApp.events();
- 		// quizApp.getMovies();
-
- 		// quizApp.questionTest(quizApp.testOverview3, quizApp.testTitle3);
- 		/************
- 		INTRO
- 		************/
- 		/* Get the decade from the user
- 			on click event that listens to the select/text input
- 		*/
- 		/* Call ajax function to get movie data from chosen decade (maybe different ajax calls)
- 		 */
-
- 		/* on.submit (Generate categories, generate questions, shuffle, Play Game!)
- 			Categories (ideas): 
- 				- Big budget films
- 				- Box office flops
- 				- Classics
- 				- Award-winning films
- 				- by Genre (sci-fi, horror, comedy, animated, doc, shorts)
- 			Questions (ideas):
- 				- Which movie starred actors X and Y
- 				- Name one of the actors that starred in movie Z
- 				- Multiple choice questions!
- 			Function for shuffling questions/categories:
- 				(Shuffles the arrays)
- 				
- 				function shuffle(questions) {
- 				  var m = questions.length, t, i;
- 				  while (m) {
- 				    i = Math.floor(Math.random() * m--);
- 				    t = questions[m];
- 				    questions[m] = questions[i];
- 				    questions[i] = t;
- 				  }
- 				  return questions;
- 				}
-
- 				Calls the shuffle to run
- 				questions = shuffle(questions);
- 		*/
-
- 		/************
- 		GAME WINDOW
- 		************/
-
- 		// Insert Questions function:
- 		// user clicks question tile and is prompted with an overlay
- 		// Overlay can contain question, answer box or buttons and pass/submit
-
- 		/*SCORE BOARD*/
- 		//generate users score
- 		//for every right answer increase score
- 		// for every wrong answer decrease score
-
- 		/*****************************
- 		Movie Data Available (property names):
- 			adult
- 			backdrop_path
- 			genre_ids
- 			id
- 			original_language
- 			original_title
- 			overview
- 			popularity
- 			poster_path
- 			release_date
- 			title
- 			video
- 			vote_average
- 			vote_count
- 		*****************************/
  	};
 
- 	//just for testing purposes!!
- 	quizApp.testOverview1 = "Twenty-two years after the events of Jurassic Park, Isla Nublar now features a fully functioning dinosaur theme park, Jurassic World, as originally envisioned by John Hammond.";
- 	quizApp.testTitle1 = "Jurassic World"
 
- 	quizApp.testOverview2 = "An apocalyptic story set in the furthest reaches of our planet, in a stark desert landscape where humanity is broken, and most everyone is crazed fighting for the necessities of life. Within this world exist two rebels on the run who just might be able to restore order. There's Max, a man of action and a man of few words, who seeks peace of mind following the loss of his wife and child in the aftermath of the chaos. And Furiosa, a woman of action and a woman who believes her path to survival may be achieved if she can make it across the desert back to her childhood homeland.";
- 	quizApp.testTitle2 = 'Mad Max: Fury Road'
-
- 	quizApp.testOverview3 = 'In a universe where human genetic material is the most precious commodity, an impoverished young Earth woman becomes the key to strategic maneuvers and internal strife within a powerful dynasty…';
- 	quizApp.testTitle3 = 'Jupiter Ascending'
- 		//var test = quizApp.removeTitleFromDescription(quizApp.testOverview2,quizApp.testTitle2)
- 		//end testing stuff
 
  	quizApp.removeTitleFromDescription = function(description, title) {
  		let titleWords = title;
@@ -207,15 +125,24 @@
 
  	quizApp.getCastForFiveMovies = function(theMoviesArray) {
  		quizApp.castdata = {};
+ 		quizApp.castCheckArray = [];
+
  		theMoviesArray.forEach((movie) => {
  			let movieId = movie.id;
  			let movieTitle = movie.title;
  			let castCheck = quizApp.getCasts(movieId);
- 			$.when(castCheck).done((data)=> {
- 				// console.log(data);
+ 			quizApp.castCheckArray.push(castCheck);
+
+ 			$.when(castCheck).done((data) => {
+ 				console.log('first');
  				quizApp.castdata[movieTitle] = data;
+ 				quizApp.castdata[movieTitle].title = movieTitle;
  			});
  		})
+ 		$.when(...quizApp.castCheckArray).done(function() {
+ 			quizApp.generateCastQuestionsArray()
+ 		});
+
  	}
 
  	quizApp.generateCastData = function() {
@@ -228,34 +155,24 @@
  		quizApp.init();
  	});
 
- 	//Cast Data
- 	//choose 5 movies to make calls (pickFiveMovies())
- 	//make ajax request for cast data with data from movie array (randomly)
- 	//repeat 5 times
- 	//store in app property for questionification
+ 	quizApp.generateYear = function() {
+ 		let max = quizApp.moviedata.length;
+ 		let min = 0;
+ 		let randomNum = Math.floor(Math.random() * (max - min + 1));
 
- 	//RELEASE_DATE QUESTIONS
+ 		//generated movies for random year
+ 		let movieByYearAnswer = quizApp.moviedata[randomNum];
 
- 	 //pick random movie  from array
- 	 //create correct answer
- 	 quizApp.generateYear = function() {
- 	 	let max = quizApp.moviedata.length;
- 	 	let min = 0;
- 	 	let randomNum = Math.floor(Math.random() * (max - min + 1));
+ 		//get relase date from movie
+ 		let correctReleaseDate = movieByYearAnswer.release_date;
+ 		//slicing it to only get the year and not the month and day
+ 		let yearNum = (correctReleaseDate.slice(0, 4) * 1);
+ 		// variable for wrong answers
+ 		let wrongAnswers = quizApp.generateWrongYears(yearNum);
 
- 	 	//generated movies for random year
- 	 	let movieByYearAnswer = quizApp.moviedata[randomNum];
-
- 	 	//get relase date from movie
- 	 	let correctReleaseDate = movieByYearAnswer.release_date;
- 	 	//slicing it to only get the year and not the month and day
- 	 	let yearNum = (correctReleaseDate.slice(0,4) * 1);
- 	 	// variable for wrong answers
- 	 	let wrongAnswers = quizApp.generateWrongYears(yearNum);
-
- 	 	let allYears = [];
- 	 	allYears.push(...wrongAnswers); //...spreads array out into comma separated values
- 	 	allYears.push(yearNum)
+ 		let allYears = [];
+ 		allYears.push(...wrongAnswers); //...spreads array out into comma separated values
+ 		allYears.push(yearNum)
 
  		const questionObject = {
  			wrongAnswers: wrongAnswers,
@@ -267,7 +184,7 @@
  			title: movieByYearAnswer.title
  		}
  		return questionObject;
- 	 };
+ 	};
 
  	//create wrong answers
  	quizApp.generateWrongYears = function(correctAnswer) {
@@ -278,24 +195,63 @@
  			let randoNum = Math.floor(Math.random() * (max - min + 1));
  			let randomNumlower = Math.floor(Math.random() * (2 - 1 + 1));
  			let wrongAnswer;
- 			if(randomNumlower === 1) {
+ 			if (randomNumlower === 1) {
  				wrongAnswer = correctAnswer + randoNum;
- 			}else {
+ 			} else {
  				wrongAnswer = correctAnswer - randoNum;
- 			} 
+ 			}
  			let isUnique = true;
 
- 			wrongAnswers.forEach(function(year){
- 				if(year === wrongAnswer) {
+ 			wrongAnswers.forEach(function(year) {
+ 				if (year === wrongAnswer) {
  					isUnique = false;
  				}
  			})
- 			if(isUnique === true) {
- 				wrongAnswers.push(wrongAnswer) 			
+ 			if (isUnique === true) {
+ 				wrongAnswers.push(wrongAnswer)
  			}
- 			
+
  		}
- 		return wrongAnswers; 
+ 		return wrongAnswers;
  	}
 
- 	//return info in object
+ 	quizApp.getRandomCastArray = function(movie) {
+ 		let castArray = [];
+ 		for(otherMovie in quizApp.castdata){
+ 			let randomCastMemeber = Math.floor(Math.random() * (quizApp.castdata[otherMovie].cast.length));
+ 			if(otherMovie !== movie && castArray.length < 3){
+ 				castArray.push(quizApp.castdata[otherMovie].cast[randomCastMemeber].name);
+ 			}
+ 		}
+ 		return castArray;
+ 	}
+
+ 	quizApp.generateCastQuestion = function(movie) {
+ 		let correctAnswer = quizApp.castdata[movie].cast[0].name;
+ 		let wrongAnswers = quizApp.getRandomCastArray(movie);
+ 		let allOptions = [];
+ 		allOptions.push(...wrongAnswers);
+ 		allOptions.push(correctAnswer);
+ 		let questionObject = {
+ 			wrongAnswers: wrongAnswers,
+ 			answer: correctAnswer,
+ 			allOptions: allOptions,
+ 			question: 'Who was the lead actor in this film?',
+ 			type: 'multipleChoice',
+ 			movie: quizApp.castdata[movie],
+ 			title: quizApp.castdata[movie].title
+ 		}
+ 		return questionObject;
+ 	}
+
+
+
+ 	quizApp.generateCastQuestionsArray = function() {
+ 		castQuestionArray = [];
+ 		for (movie in quizApp.castdata) {
+ 			let newQuestion = quizApp.generateCastQuestion(movie);
+ 			castQuestionArray.push(newQuestion);
+ 		}
+ 		quizApp.castQuestions = castQuestionArray;
+ 		return castQuestionArray
+ 	}
