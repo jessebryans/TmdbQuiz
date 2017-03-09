@@ -237,7 +237,7 @@
  	//RELEASE_DATE QUESTIONS
 
  	 //pick random movie  from array
-
+ 	 //create correct answer
  	 quizApp.generateYear = function() {
  	 	let max = quizApp.moviedata.length;
  	 	let min = 0;
@@ -250,8 +250,23 @@
  	 	let correctReleaseDate = movieByYearAnswer.release_date;
  	 	//slicing it to only get the year and not the month and day
  	 	let yearNum = (correctReleaseDate.slice(0,4) * 1);
- 	 	// console.log(yearNum)
- 	 	quizApp.generateWrongYears(yearNum);
+ 	 	// variable for wrong answers
+ 	 	let wrongAnswers = quizApp.generateWrongYears(yearNum);
+
+ 	 	let allYears = [];
+ 	 	allYears.push(...wrongAnswers); //...spreads array out into comma separated values
+ 	 	allYears.push(yearNum)
+
+ 		const questionObject = {
+ 			wrongAnswers: wrongAnswers,
+ 			answer: yearNum,
+ 			allYears: allYears,
+ 			question: 'Which year was this movie release?',
+ 			type: 'multipleChoice',
+ 			movie: movieByYearAnswer,
+ 			title: movieByYearAnswer.title
+ 		}
+ 		return questionObject;
  	 };
 
  	//create wrong answers
@@ -279,7 +294,8 @@
  				wrongAnswers.push(wrongAnswer) 			
  			}
  			
- 		}console.log(wrongAnswers)
+ 		}
+ 		return wrongAnswers; 
  	}
 
  	//return info in object
