@@ -1,5 +1,25 @@
  	const quizApp = {};
 
+ 	quizApp.firebaseInit = function() {
+ 		// Initialize Firebase
+ 		var config = {
+ 			apiKey: "AIzaSyDHFyTJOQj_A7LGzwiw9bnvCkPhBXXviIU",
+ 			authDomain: "trebeksquad-quiz-app.firebaseapp.com",
+ 			databaseURL: "https://trebeksquad-quiz-app.firebaseio.com",
+ 			storageBucket: "trebeksquad-quiz-app.appspot.com",
+ 			messagingSenderId: "434381434216"
+ 		};
+ 		firebase.initializeApp(config);
+ 		quizApp.dbref = firebase.database().ref();
+ 		quizApp.dbref.on('value', (response) => {
+ 				let (response.val());
+ 			})
+ 			// quizApp.dbref.child("highScores");
+
+
+ 	}
+
+
  	quizApp.getMovies = function(year) {
  		return $.ajax({
  			url: 'https://api.themoviedb.org/3/discover/movie',
@@ -61,6 +81,10 @@
  			quizApp.displayQuestion(quizApp.generateYear());
  		});
 
+ 		$('.gameCategory').on('click', '.gameButton',  function(event) {
+ 			event.preventDefault();
+ 			console.log($(this).data());
+ 		});
  	}
 
  	quizApp.removeTitleFromDescription = function(description, title) {
@@ -298,7 +322,7 @@
  	}
 
 
- 	quizApp.getRandomYearRevenueMovies = function(year){
+ 	quizApp.getRandomYearRevenueMovies = function(year) {
  		return $.ajax({
  			url: 'https://api.themoviedb.org/3/discover/movie',
  			type: 'GET',
@@ -327,25 +351,25 @@
  			quizApp.generateRevenueQuestion();
  		}
  		$.when(...quizApp.revMovieCheckArray).done(function(...data) {
- 			data.forEach((index)=> {	
-			let yearRevMovies = index[0].results;
-			let questionObject = {};
-			let randomIndex = Math.floor(Math.random() * ((yearRevMovies.length - 3) - 0 + 1));
-			let wrongAnswers = [];
-			let randomWrongIndexStart = Math.floor(Math.random() * (yearRevMovies.length - randomIndex + 1))
-			for (var i = 0; i < 2; i++) {
-				let wrongAnswer = yearRevMovies[(randomWrongIndexStart + i)].title;
-				wrongAnswers.push(wrongAnswer)
-			}
-			// questionObject.year = randomYear;
-			questionObject.moviesByRev = yearRevMovies;
-			questionObject.question = 'Which of these movies made the largest amount of money?'
-			questionObject.answer = yearRevMovies[randomIndex].title;
-			questionObject.answerObject = yearRevMovies[randomIndex];
-			questionObject.year = yearRevMovies[randomIndex].release_date.slice(0,4) * 1;
-			questionObject.wrongAnswers = wrongAnswers;
-			questionObject.type = 'multipleChoice';
-			revQuestionArray.push(questionObject);
+ 			data.forEach((index) => {
+ 				let yearRevMovies = index[0].results;
+ 				let questionObject = {};
+ 				let randomIndex = Math.floor(Math.random() * ((yearRevMovies.length - 3) - 0 + 1));
+ 				let wrongAnswers = [];
+ 				let randomWrongIndexStart = Math.floor(Math.random() * (yearRevMovies.length - randomIndex + 1))
+ 				for (var i = 0; i < 2; i++) {
+ 					let wrongAnswer = yearRevMovies[(randomWrongIndexStart + i)].title;
+ 					wrongAnswers.push(wrongAnswer)
+ 				}
+ 				// questionObject.year = randomYear;
+ 				questionObject.moviesByRev = yearRevMovies;
+ 				questionObject.question = 'Which of these movies made the largest amount of money?'
+ 				questionObject.answer = yearRevMovies[randomIndex].title;
+ 				questionObject.answerObject = yearRevMovies[randomIndex];
+ 				questionObject.year = yearRevMovies[randomIndex].release_date.slice(0, 4) * 1;
+ 				questionObject.wrongAnswers = wrongAnswers;
+ 				questionObject.type = 'multipleChoice';
+ 				revQuestionArray.push(questionObject);
  			})
  		});
  		quizApp.revQuestionArray = revQuestionArray;
@@ -353,52 +377,52 @@
  	}
 
 
-	quizApp.pickRoleMovie = function() {
-		let movieObject	= quizApp.moviedata
-		let randoNum = Math.floor(Math.random() * (movieObject.length)) + 1;
-		let movieForRoleQ = movieObject[randoNum];
-		let movieTitle = movieForRoleQ.title;
-		let movieId = movieForRoleQ.id;
-		let castObject = quizApp.getCasts(movieId);
-		$.when(castObject).then(function(data) {
-			let roleMovieCast = data.cast;
-			// console.log(roleMovieCast);
-			quizApp.generateRoleQuestion(roleMovieCast);
-		});
-		
-	}
-	
-	// Which role did (this actor) play in (this movie)?
-	quizApp.generateRoleQuestion = function(cast) {
-		let correctCharacter = cast[0].character;
-		let correctName = cast[0].name;
-		let wrongCharactersArray = [];
-		let randoNum = Math.floor(Math.random() * cast.length) + 1;
-		let wrongCharacter = cast[randoNum].character;
-		// console.log(wrongCharacter);
-		for (let i = 0; i < 3; i++) {
-			wrongCharactersArray.push(wrongCharacter);
-		}
-		let allCharacters = wrongCharactersArray;
-		allCharacters.push(correctCharacter);
-		let roleQuestionObject = {
-			wrongCharactersArray: wrongCharactersArray,
-			correctCharacter: correctCharacter,
-			allCharacters: allCharacters,
-			question: 'What character did (X) play in (Y)?',
-			type: 'multipleChoice'
-		}
-		return roleQuestionObject;
-	}
+ 	quizApp.pickRoleMovie = function() {
+ 		let movieObject = quizApp.moviedata
+ 		let randoNum = Math.floor(Math.random() * (movieObject.length)) + 1;
+ 		let movieForRoleQ = movieObject[randoNum];
+ 		let movieTitle = movieForRoleQ.title;
+ 		let movieId = movieForRoleQ.id;
+ 		let castObject = quizApp.getCasts(movieId);
+ 		$.when(castObject).then(function(data) {
+ 			let roleMovieCast = data.cast;
+ 			// console.log(roleMovieCast);
+ 			quizApp.generateRoleQuestion(roleMovieCast);
+ 		});
 
-	quizApp.generateFiveRandomRoleQuestion = function() {
-	 		let roleQuestionArray = [];
-			for (var i = 0; i < 4; i++) {
-				roleQuestionArray.push(quizApp.generateRoleQuestion());
-			}
-			quizApp.roleQuestionArray = roleQuestionArray;
-			return roleQuestionArray;
-	 	}
+ 	}
+
+ 	// Which role did (this actor) play in (this movie)?
+ 	quizApp.generateRoleQuestion = function(cast) {
+ 		let correctCharacter = cast[0].character;
+ 		let correctName = cast[0].name;
+ 		let wrongCharactersArray = [];
+ 		let randoNum = Math.floor(Math.random() * cast.length) + 1;
+ 		let wrongCharacter = cast[randoNum].character;
+ 		// console.log(wrongCharacter);
+ 		for (let i = 0; i < 3; i++) {
+ 			wrongCharactersArray.push(wrongCharacter);
+ 		}
+ 		let allCharacters = wrongCharactersArray;
+ 		allCharacters.push(correctCharacter);
+ 		let roleQuestionObject = {
+ 			wrongCharactersArray: wrongCharactersArray,
+ 			correctCharacter: correctCharacter,
+ 			allCharacters: allCharacters,
+ 			question: 'What character did (X) play in (Y)?',
+ 			type: 'multipleChoice'
+ 		}
+ 		return roleQuestionObject;
+ 	}
+
+ 	quizApp.generateFiveRandomRoleQuestion = function() {
+ 		let roleQuestionArray = [];
+ 		for (var i = 0; i < 4; i++) {
+ 			roleQuestionArray.push(quizApp.generateRoleQuestion());
+ 		}
+ 		quizApp.roleQuestionArray = roleQuestionArray;
+ 		return roleQuestionArray;
+ 	}
 
 
  	quizApp.init = function() {
@@ -409,3 +433,26 @@
  	$(function() {
  		quizApp.init();
  	});
+
+ 	quizApp.populateGameBoard = function() {
+ 		for (var i = 0; i < quizApp.yearQuestionArray.length; i++) {
+ 			let points = '$' + (100 * (i + 1));
+ 			let question = `quizApp.yearQuestionArray[${i}]`;
+ 			$('.main__game__category__year').append(`<li><button class="button${i} gameButton" data-question="${question}">${points}</button></li>`);
+ 		}
+ 		for (var i = 0; i < quizApp.descQuestionArray.length; i++) {
+ 			let points = '$' + (100 * (i + 1));
+ 			let question = `quizApp.descQuestionArray[${i}]`;
+ 			$('.main__game__category__desc').append(`<li><button class="button${i} gameButton" data-question="${question}">${points}</button></li>`);
+ 		}
+ 		for (var i = 0; i < quizApp.revQuestionArray.length; i++) {
+ 			let points = '$' + (100 * (i + 1));
+ 			let question = `quizApp.revQuestionArray[${i}]`;
+ 			$('.main__game__category__rev').append(`<li><button class="button${i} gameButton" data-question="${question}">${points}</button></li>`);
+ 		}
+ 		for (var i = 0; i < (quizApp.castQuestions.length - 1); i++) {
+ 			let points = '$' + (100 * (i + 1));
+ 			let question = `quizApp.castQuestions[${i}]`;
+ 			$('.main__game__category__cast').append(`<li><button class="button${i} gameButton" data-question="${question}">${points}</button></li>`);
+ 		}
+ 	}

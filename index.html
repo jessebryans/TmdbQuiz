@@ -50,60 +50,36 @@
 		<!--GAME PAGE START -->
 		<section class="main">
 			<div class="wrapper">
-				<head class="main__header">
+				<header class="main__header">
 					<h2 class="main__header__title">Trebek Squad Trivia</h2>
 					<p class="main__header__score"> {Score} </p>
-				</head>
+				</header>
 				<!--GAME BOARD-->
 				<main class="main__game">
 				<div class="main__game__categories">
-					<ul class="main__game__category1">
+					<ul class="main__game__category__year gameCategory">
 						<li class="category1">{category1}</li>
-						<li class="question10">{question10}</li>
+					<!-- 	<li class="question1">{question10}</li>
 						<li class="question2">{question}</li>
 						<li class="question3">{question}</li>
 						<li class="question4">{question}</li>
-						<li class="question5">{question}</li>
+						<li class="question5">{question}</li> -->
 					</ul>
-					<ul class="main__game__category2">
+					<ul class="main__game__category__desc gameCategory">
 						<li class="category2">{category2}</li>
-						<li class="question1">{question}</li>
-						<li class="question2">{question}</li>
-						<li class="question3">{question}</li>
-						<li class="question4">{question}</li>
-						<li class="question5">{question}</li>
+
 					</ul>
-					<ul class="main__game__category3">
+					<ul class="main__game__category__cast gameCategory">
 						<li class="category3">{category3}</li>
-						<li class="question1">{question}</li>
-						<li class="question2">{question}</li>
-						<li class="question3">{question}</li>
-						<li class="question4">{question}</li>
-						<li class="question5">{question}</li>
+
 					</ul>
-					<ul class="main__game__category4">
+					<ul class="main__game__category__rev gameCategory">
 						<li class="category4">{category4}</li>
-						<li class="question1">{question}</li>
-						<li class="question2">{question}</li>
-						<li class="question3">{question}</li>
-						<li class="question4">{question}</li>
-						<li class="question5">{question}</li>
+
 					</ul>
-					<ul class="main__game__category5">
+					<ul class="main__game__category5 gameCategory">
 						<li class="category5">{category5}</li>
-						<li class="question1">{question}</li>
-						<li class="question2">{question}</li>
-						<li class="question3">{question}</li>
-						<li class="question4">{question}</li>
-						<li class="question5">{question}</li>
-					</ul>
-					<ul class="main__game__category6">
-						<li class="category6">{category6}</li>
-						<li class="question1">{question}</li>
-						<li class="question2">{question}</li>
-						<li class="question3">{question}</li>
-						<li class="question4">{question}</li>
-						<li class="question5">{question}</li>
+
 					</ul>
 				</div>
 				<input type="submit" value="Play Again" id="againButton">
@@ -148,14 +124,15 @@
 					<li class="scores5">scores5</li>
 				</ul>
 			</div>
-		</section>
-		<!--SCORE WINDOW END-->
 		<footer>
 			<p class="footer__copyright">&copy; 2017 Trebek Squad. All rights reserved.</p>
 		</footer>
+		</section>
+		<!--SCORE WINDOW END-->
 		
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
 		<script src="dev/js/js.js"></script>
 	</body>
 </html>
