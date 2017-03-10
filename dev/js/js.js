@@ -56,10 +56,16 @@
  			});
  		});
 
- 		$('.question10').on('click', function(e) {
- 			e.preventDefault();
- 			quizApp.displayQuestion(quizApp.generateYear());
+ 		$('.question').on('click', function() {
+ 			// quizApp.displayQuestion(quizApp.generateYear());
+ 			quizApp.getReleaseYearData();
+ 			console.log(quizApp.getReleaseYearData())
  		});
+
+ 		// $('.buttonAnswer').on('submit', function(e) {
+ 		// 	e.preventDefault();
+ 		// 	quizApp.
+ 		// });
 
  	}
 
@@ -194,7 +200,7 @@
  			wrongAnswers: wrongAnswers,
  			answer: yearNum,
  			allYears: allYears,
- 			question: 'Which year was this movie released?',
+ 			question: `Which year was ${movieByYearAnswer.title} released?`,
  			type: 'multipleChoice',
  			movie: movieByYearAnswer,
  			title: movieByYearAnswer.title
@@ -243,20 +249,36 @@
 
  	//Displaying Question
 
- 	quizApp.displayQuestion = (question) => {
- 		$('.questions__text').empty('');
- 		$('.questions__text').append(quizApp.generateYear().question);
+ 	// quizApp.displayQuestion = (question) => {
+ 	// 	$('.questions__text').empty('');
+ 	// 	$('.questions__text').append(quizApp.generateYear().question);
 
- 		// console.log(quizApp.generateYear().question);
- 		// var multiButtons = Math.floor(Math.random() * quizApp.generateYear().allYears[0];
- 		let questionobj = quizApp.generateYear();
+ 	// 	// console.log(quizApp.generateYear().question);
+ 	// 	// var multiButtons = Math.floor(Math.random() * quizApp.generateYear().allYears[0];
+ 	// 	let questionobj = quizApp.generateYear();
 
- 		$('#answerOne').text(questionobj.allYears[0])
- 		$('#answerTwo').text(questionobj.allYears[1])
- 		$('#answerThree').text(questionobj.allYears[2])
- 		$('#answerFour').text(questionobj.allYears[3])
- 			// console.log(questionobj.allYears)
+ 	// 	$('#answerOne').text(questionobj.allYears[0])
+ 	// 	$('#answerTwo').text(questionobj.allYears[1])
+ 	// 	$('#answerThree').text(questionobj.allYears[2])
+ 	// 	$('#answerFour').text(questionobj.allYears[3])
+ 	// 		// console.log(questionobj.allYears)
+ 	// 		// quizApp.displayQuestion(quizApp.generateYear());
+
+
+ 	// }
+
+ 	//for each type of question. loop through each question.and then store the reference in the html
+ 	quizApp.getReleaseYearData = () => {
+ 		
+ 		// $('.question').data('question','quizApp.yearQuestionArray[1]');
+ 		// $('.question').data('question','quizApp.yearQuestionArray[2]');
+ 		// $('.question').data('question','quizApp.yearQuestionArray[3]');
+ 		for(var i = 0; i < 4; i++) {
+ 			$('.question').data('question','quizApp.yearQuestionArray[i]');
+ 		}
  	}
+
+ 	quizApp.displayRelease
 
 
  	//when user selects a button (on.click) determine if it is the wrong or right answer
