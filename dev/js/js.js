@@ -196,21 +196,21 @@
 
  	quizApp.generateWrongYears = function(correctAnswer) {
  		let wrongAnswers = [];
- 		let max = 5;
+ 		let max = 4;
  		let min = 1
  		for (var i = 0; wrongAnswers.length < 3; i++) {
  			let randoNum = Math.floor(Math.random() * (max - min + 1));
  			let randomNumlower = Math.floor(Math.random() * (2 - 1 + 1));
  			let wrongAnswer;
  			if (randomNumlower === 1) {
- 				wrongAnswer = correctAnswer + randoNum;
+ 				wrongAnswer = (quizApp.userDecadeChoice + 5) + randoNum;
  			} else {
- 				wrongAnswer = correctAnswer - randoNum;
+ 				wrongAnswer = (quizApp.userDecadeChoice + 5) - randoNum;
  			}
  			let isUnique = true;
 
  			wrongAnswers.forEach(function(year) {
- 				if (year === wrongAnswer) {
+ 				if (year === wrongAnswer) { 
  					isUnique = false;
  				}
  			})
