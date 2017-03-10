@@ -12,7 +12,6 @@
  				primary_release_year: year //movies from this year
  			}
  		})
-
  	}
 
  	quizApp.getCasts = function(movieId) { //takes movie id, gets cast and crew for that movie
@@ -31,6 +30,7 @@
  			e.preventDefault();
  			// Multiplied value by one to coerce string into number
  			let year = ($('#yearSelection').val() * 1);
+ 			quizApp.userDecadeChoice = year;
  			// Make an ajax call for the following nine years after #yearSelection
  			quizApp.movieChecks = [];
 
@@ -55,13 +55,6 @@
  			});
  		});
  	}
-
-
- 	quizApp.init = function() {
- 		quizApp.events();
- 	};
-
-
 
  	quizApp.removeTitleFromDescription = function(description, title) {
  		let titleWords = title;
@@ -114,6 +107,15 @@
  		return questionObject;
  	}
 
+ 	quizApp.generateFiveRandomDescQuestion = function() {
+ 		let descQuestionArray = [];
+		for (var i = 0; i < 4; i++) {
+			descQuestionArray.push(quizApp.generateRandomDescQuestion());
+		}
+		quizApp.descQuestionArray = descQuestionArray;
+		return descQuestionArray;
+ 	}
+
  	quizApp.pickFiveMovies = function() {
  		let theMovies = [];
  		for (var i = 0; i < 5; i++) { //do this 5 times
@@ -140,9 +142,11 @@
  			});
  		})
  		$.when(...quizApp.castCheckArray).done(function() {
- 			quizApp.generateCastQuestionsArray()
+ 			quizApp.generateCastQuestionsArray();
+ 			quizApp.generateFiveRevQuestions();
+ 			quizApp.generateFiveYearQuestions();
+ 			quizApp.generateFiveRandomDescQuestion();
  		});
-
  	}
 
  	quizApp.generateCastData = function() {
@@ -150,10 +154,14 @@
  		quizApp.getCastForFiveMovies(fiveMovies);
  	}
 
-
- 	$(function() {
- 		quizApp.init();
- 	});
+ 	quizApp.generateFiveYearQuestions = function(){
+ 		let yearQuestionArray = [];
+		for (var i = 0; i < 4; i++) {
+			yearQuestionArray.push(quizApp.generateYear());
+		}
+		quizApp.yearQuestionArray = yearQuestionArray;
+		return yearQuestionArray;
+ 	}
 
  	quizApp.generateYear = function() {
  		let max = quizApp.moviedata.length;
@@ -186,7 +194,6 @@
  		return questionObject;
  	};
 
- 	//create wrong answers
  	quizApp.generateWrongYears = function(correctAnswer) {
  		let wrongAnswers = [];
  		let max = 5;
@@ -244,8 +251,6 @@
  		return questionObject;
  	}
 
-
-
  	quizApp.generateCastQuestionsArray = function() {
  		castQuestionArray = [];
  		for (movie in quizApp.castdata) {
@@ -255,3 +260,60 @@
  		quizApp.castQuestions = castQuestionArray;
  		return castQuestionArray
  	}
+
+ 	quizApp.getRandomYearRevenueMovies = function(year){
+ 		return $.ajax({
+ 			url: 'https://api.themoviedb.org/3/discover/movie',
+ 			type: 'GET',
+ 			dataType: 'JSON',
+ 			data: {
+ 				api_key: '8a92833b6f0e0a614c460724797ccc79', // our key is limited to 40 calls every 10 seconds.
+ 				format: 'json',
+ 				sort_by: 'revenue.desc', //puts most revenue movies at the top
+ 				primary_release_year: year //movies from this year
+ 			}
+ 		})
+ 	}
+
+ 	quizApp.generateRevenueQuestion = function() {
+ 		let randoNum = Math.floor(Math.random() * (9 - 0 + 1))
+ 		let randomYear = quizApp.userDecadeChoice + randoNum;
+ 		let revenueMoviesCheck = quizApp.getRandomYearRevenueMovies(randomYear);
+ 		$.when(revenueMoviesCheck).done((data) => {
+ 			let yearRevMovies = data.results;
+ 			let questionObject = {};
+ 			let randomIndex = Math.floor(Math.random() * ((yearRevMovies.length - 3) - 0 + 1));
+ 			let wrongAnswers = [];
+ 			let randomWrongIndexStart = Math.floor(Math.random() * (yearRevMovies.length - randomIndex + 1))
+ 			for (var i = 0; i < 2; i++) {
+ 				let wrongAnswer = yearRevMovies[(randomWrongIndexStart + i)].title;
+ 				wrongAnswers.push(wrongAnswer)
+ 			}
+ 			questionObject.year = randomYear;
+ 			questionObject.moviesByRev = yearRevMovies;
+ 			questionObject.question = 'Which of these movies made the largest amount of money?'
+ 			questionObject.answer = yearRevMovies[randomIndex].title;
+ 			questionObject.answerObject = yearRevMovies[randomIndex];
+ 			questionObject.wrongAnswers = wrongAnswers;
+ 			questionObject.type = 'multipleChoice';
+ 			return questionObject;//do something with list of movies (in order of revenue)
+ 		});
+ 	}
+
+	quizApp.generateFiveRevQuestions = function() {
+		let revQuestionArray = [];
+		for (var i = 0; i < 4; i++) {
+			revQuestionArray.push(quizApp.generateRevenueQuestion());
+		}
+		quizApp.revQuestionArray = revQuestionArray;
+		return revQuestionArray;
+	}
+
+
+ 	quizApp.init = function() {
+ 		quizApp.events();
+ 	};
+
+ 	$(function() {
+ 		quizApp.init();
+ 	});
