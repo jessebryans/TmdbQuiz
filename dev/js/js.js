@@ -116,11 +116,11 @@
 
  	quizApp.generateFiveRandomDescQuestion = function() {
  		let descQuestionArray = [];
-		for (var i = 0; i < 4; i++) {
-			descQuestionArray.push(quizApp.generateRandomDescQuestion());
-		}
-		quizApp.descQuestionArray = descQuestionArray;
-		return descQuestionArray;
+ 		for (var i = 0; i < 4; i++) {
+ 			descQuestionArray.push(quizApp.generateRandomDescQuestion());
+ 		}
+ 		quizApp.descQuestionArray = descQuestionArray;
+ 		return descQuestionArray;
  	}
 
  	quizApp.pickFiveMovies = function() {
@@ -161,13 +161,13 @@
  		quizApp.getCastForFiveMovies(fiveMovies);
  	}
 
- 	quizApp.generateFiveYearQuestions = function(){
+ 	quizApp.generateFiveYearQuestions = function() {
  		let yearQuestionArray = [];
-		for (var i = 0; i < 4; i++) {
-			yearQuestionArray.push(quizApp.generateYear());
-		}
-		quizApp.yearQuestionArray = yearQuestionArray;
-		return yearQuestionArray;
+ 		for (var i = 0; i < 4; i++) {
+ 			yearQuestionArray.push(quizApp.generateYear());
+ 		}
+ 		quizApp.yearQuestionArray = yearQuestionArray;
+ 		return yearQuestionArray;
  	}
 
  	quizApp.generateYear = function() {
@@ -217,7 +217,7 @@
  			let isUnique = true;
 
  			wrongAnswers.forEach(function(year) {
- 				if (year === wrongAnswer) { 
+ 				if (year === wrongAnswer) {
  					isUnique = false;
  				}
  			})
@@ -231,9 +231,9 @@
 
  	quizApp.getRandomCastArray = function(movie) {
  		let castArray = [];
- 		for(otherMovie in quizApp.castdata){
+ 		for (otherMovie in quizApp.castdata) {
  			let randomCastMemeber = Math.floor(Math.random() * (quizApp.castdata[otherMovie].cast.length));
- 			if(otherMovie !== movie && castArray.length < 3){
+ 			if (otherMovie !== movie && castArray.length < 3) {
  				castArray.push(quizApp.castdata[otherMovie].cast[randomCastMemeber].name);
  			}
  		}
@@ -254,7 +254,7 @@
  		$('#answerTwo').text(questionobj.allYears[1])
  		$('#answerThree').text(questionobj.allYears[2])
  		$('#answerFour').text(questionobj.allYears[3])
- 		// console.log(questionobj.allYears)
+ 			// console.log(questionobj.allYears)
  	}
 
 
@@ -295,7 +295,7 @@
  		return castQuestionArray
  	}
 
- 	quizApp.getRandomYearRevenueMovies = function(year){
+ 	quizApp.getRandomYearRevenueMovies = function(year) {
  		return $.ajax({
  			url: 'https://api.themoviedb.org/3/discover/movie',
  			type: 'GET',
@@ -313,35 +313,41 @@
  		let randoNum = Math.floor(Math.random() * (9 - 0 + 1))
  		let randomYear = quizApp.userDecadeChoice + randoNum;
  		let revenueMoviesCheck = quizApp.getRandomYearRevenueMovies(randomYear);
- 		$.when(revenueMoviesCheck).done((data) => {
- 			let yearRevMovies = data.results;
- 			let questionObject = {};
- 			let randomIndex = Math.floor(Math.random() * ((yearRevMovies.length - 3) - 0 + 1));
- 			let wrongAnswers = [];
- 			let randomWrongIndexStart = Math.floor(Math.random() * (yearRevMovies.length - randomIndex + 1))
- 			for (var i = 0; i < 2; i++) {
- 				let wrongAnswer = yearRevMovies[(randomWrongIndexStart + i)].title;
- 				wrongAnswers.push(wrongAnswer)
- 			}
- 			questionObject.year = randomYear;
- 			questionObject.moviesByRev = yearRevMovies;
- 			questionObject.question = 'Which of these movies made the largest amount of money?'
- 			questionObject.answer = yearRevMovies[randomIndex].title;
- 			questionObject.answerObject = yearRevMovies[randomIndex];
- 			questionObject.wrongAnswers = wrongAnswers;
- 			questionObject.type = 'multipleChoice';
- 			return questionObject;//do something with list of movies (in order of revenue)
- 		});
+ 		quizApp.revMovieCheckArray.push(revenueMoviesCheck);
  	}
 
-	quizApp.generateFiveRevQuestions = function() {
-		let revQuestionArray = [];
-		for (var i = 0; i < 4; i++) {
-			revQuestionArray.push(quizApp.generateRevenueQuestion());
-		}
-		quizApp.revQuestionArray = revQuestionArray;
-		return revQuestionArray;
-	}
+ 	quizApp.generateFiveRevQuestions = function() {
+
+ 		let revQuestionArray = [];
+ 		quizApp.revMovieCheckArray = [];
+ 		for (var i = 0; i < 4; i++) {
+ 			quizApp.generateRevenueQuestion();
+ 		}
+ 		$.when(...quizApp.revMovieCheckArray).done(function(...data) {
+ 			data.forEach((index)=> {	
+			let yearRevMovies = index[0].results;
+			let questionObject = {};
+			let randomIndex = Math.floor(Math.random() * ((yearRevMovies.length - 3) - 0 + 1));
+			let wrongAnswers = [];
+			let randomWrongIndexStart = Math.floor(Math.random() * (yearRevMovies.length - randomIndex + 1))
+			for (var i = 0; i < 2; i++) {
+				let wrongAnswer = yearRevMovies[(randomWrongIndexStart + i)].title;
+				wrongAnswers.push(wrongAnswer)
+			}
+			// questionObject.year = randomYear;
+			questionObject.moviesByRev = yearRevMovies;
+			questionObject.question = 'Which of these movies made the largest amount of money?'
+			questionObject.answer = yearRevMovies[randomIndex].title;
+			questionObject.answerObject = yearRevMovies[randomIndex];
+			questionObject.year = yearRevMovies[randomIndex].release_date.slice(0,4) * 1;
+			questionObject.wrongAnswers = wrongAnswers;
+			questionObject.type = 'multipleChoice';
+			revQuestionArray.push(questionObject);
+ 			})
+ 		});
+ 		quizApp.revQuestionArray = revQuestionArray;
+ 		return revQuestionArray;
+ 	}
 
 
  	quizApp.init = function() {
