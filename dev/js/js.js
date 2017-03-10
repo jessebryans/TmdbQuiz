@@ -159,6 +159,7 @@
  	quizApp.generateCastData = function() {
  		let fiveMovies = quizApp.pickFiveMovies();
  		quizApp.getCastForFiveMovies(fiveMovies);
+ 		let roleQuestionMovie = quizApp.pickRoleMovie();
  	}
 
  	quizApp.generateFiveYearQuestions = function() {
@@ -285,6 +286,7 @@
  		return questionObject;
  	}
 
+
  	quizApp.generateCastQuestionsArray = function() {
  		castQuestionArray = [];
  		for (movie in quizApp.castdata) {
@@ -295,7 +297,11 @@
  		return castQuestionArray
  	}
 
+
  	quizApp.getRandomYearRevenueMovies = function(year) {
+
+
+ 	quizApp.getRandomYearRevenueMovies = function(year){
  		return $.ajax({
  			url: 'https://api.themoviedb.org/3/discover/movie',
  			type: 'GET',
@@ -350,9 +356,58 @@
  	}
 
 
+	quizApp.pickRoleMovie = function() {
+		let movieObject	= quizApp.moviedata
+		let randoNum = Math.floor(Math.random() * (movieObject.length)) + 1;
+		let movieForRoleQ = movieObject[randoNum];
+		let movieTitle = movieForRoleQ.title;
+		let movieId = movieForRoleQ.id;
+		let castObject = quizApp.getCasts(movieId);
+		$.when(castObject).then(function(data) {
+			let roleMovieCast = data.cast;
+			// console.log(roleMovieCast);
+			quizApp.generateRoleQuestion(roleMovieCast);
+		});
+		
+	}
+	
+	// Which role did (this actor) play in (this movie)?
+	quizApp.generateRoleQuestion = function(cast) {
+		let correctCharacter = cast[0].character;
+		let correctName = cast[0].name;
+		let wrongCharactersArray = [];
+		let randoNum = Math.floor(Math.random() * cast.length) + 1;
+		let wrongCharacter = cast[randoNum].character;
+		// console.log(wrongCharacter);
+		for (let i = 0; i < 3; i++) {
+			wrongCharactersArray.push(wrongCharacter);
+		}
+		let allCharacters = wrongCharactersArray;
+		allCharacters.push(correctCharacter);
+		let roleQuestionObject = {
+			wrongCharactersArray: wrongCharactersArray,
+			correctCharacter: correctCharacter,
+			allCharacters: allCharacters,
+			question: 'What character did (X) play in (Y)?',
+			type: 'multipleChoice'
+		}
+		return roleQuestionObject;
+	}
+
+	quizApp.generateFiveRandomRoleQuestion = function() {
+	 		let roleQuestionArray = [];
+			for (var i = 0; i < 4; i++) {
+				roleQuestionArray.push(quizApp.generateRoleQuestion());
+			}
+			quizApp.roleQuestionArray = roleQuestionArray;
+			return roleQuestionArray;
+	 	}
+
+
  	quizApp.init = function() {
  		quizApp.events();
  	};
+
 
  	$(function() {
  		quizApp.init();
