@@ -298,9 +298,6 @@
  	}
 
 
- 	quizApp.getRandomYearRevenueMovies = function(year) {
-
-
  	quizApp.getRandomYearRevenueMovies = function(year){
  		return $.ajax({
  			url: 'https://api.themoviedb.org/3/discover/movie',
