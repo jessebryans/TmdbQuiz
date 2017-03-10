@@ -52,8 +52,15 @@
  					}) //end of double loop
  				quizApp.moviedata = finalArray;
  				quizApp.generateCastData();
+
  			});
  		});
+
+ 		$('.question10').on('click', function(e) {
+ 			e.preventDefault();
+ 			quizApp.displayQuestion(quizApp.generateYear());
+ 		});
+
  	}
 
  	quizApp.removeTitleFromDescription = function(description, title) {
@@ -152,6 +159,7 @@
  	quizApp.generateCastData = function() {
  		let fiveMovies = quizApp.pickFiveMovies();
  		quizApp.getCastForFiveMovies(fiveMovies);
+ 		let roleQuestionMovie = quizApp.pickRoleMovie();
  	}
 
  	quizApp.generateFiveYearQuestions = function(){
@@ -186,7 +194,7 @@
  			wrongAnswers: wrongAnswers,
  			answer: yearNum,
  			allYears: allYears,
- 			question: 'Which year was this movie release?',
+ 			question: 'Which year was this movie released?',
  			type: 'multipleChoice',
  			movie: movieByYearAnswer,
  			title: movieByYearAnswer.title
@@ -196,21 +204,21 @@
 
  	quizApp.generateWrongYears = function(correctAnswer) {
  		let wrongAnswers = [];
- 		let max = 5;
+ 		let max = 4;
  		let min = 1
  		for (var i = 0; wrongAnswers.length < 3; i++) {
  			let randoNum = Math.floor(Math.random() * (max - min + 1));
  			let randomNumlower = Math.floor(Math.random() * (2 - 1 + 1));
  			let wrongAnswer;
  			if (randomNumlower === 1) {
- 				wrongAnswer = correctAnswer + randoNum;
+ 				wrongAnswer = (quizApp.userDecadeChoice + 5) + randoNum;
  			} else {
- 				wrongAnswer = correctAnswer - randoNum;
+ 				wrongAnswer = (quizApp.userDecadeChoice + 5) - randoNum;
  			}
  			let isUnique = true;
 
  			wrongAnswers.forEach(function(year) {
- 				if (year === wrongAnswer) {
+ 				if (year === wrongAnswer) { 
  					isUnique = false;
  				}
  			})
@@ -233,6 +241,33 @@
  		return castArray;
  	}
 
+ 	//Displaying Question
+
+ 	quizApp.displayQuestion = (question) => {
+ 		$('.questions__text').empty('');
+ 		$('.questions__text').append(quizApp.generateYear().question);
+
+ 		// console.log(quizApp.generateYear().question);
+ 		// var multiButtons = Math.floor(Math.random() * quizApp.generateYear().allYears[0];
+ 		let questionobj = quizApp.generateYear();
+
+ 		$('#answerOne').text(questionobj.allYears[0])
+ 		$('#answerTwo').text(questionobj.allYears[1])
+ 		$('#answerThree').text(questionobj.allYears[2])
+ 		$('#answerFour').text(questionobj.allYears[3])
+ 		// console.log(questionobj.allYears)
+ 	}
+
+
+ 	//when user selects a button (on.click) determine if it is the wrong or right answer
+
+ 	// $('#radioButtonsYear').on('click', function(e) {
+ 	// 	console.log(quizApp.generateYear.questionobj.yearNum)
+ 	// });
+ 	//prompt or alert appears
+ 	// if answer is right go to next wuestion 
+ 	//else keep choosing
+
  	quizApp.generateCastQuestion = function(movie) {
  		let correctAnswer = quizApp.castdata[movie].cast[0].name;
  		let wrongAnswers = quizApp.getRandomCastArray(movie);
@@ -251,6 +286,7 @@
  		return questionObject;
  	}
 
+
  	quizApp.generateCastQuestionsArray = function() {
  		castQuestionArray = [];
  		for (movie in quizApp.castdata) {
@@ -260,6 +296,7 @@
  		quizApp.castQuestions = castQuestionArray;
  		return castQuestionArray
  	}
+
 
  	quizApp.getRandomYearRevenueMovies = function(year){
  		return $.ajax({
@@ -310,9 +347,58 @@
 	}
 
 
+	quizApp.pickRoleMovie = function() {
+		let movieObject	= quizApp.moviedata
+		let randoNum = Math.floor(Math.random() * (movieObject.length)) + 1;
+		let movieForRoleQ = movieObject[randoNum];
+		let movieTitle = movieForRoleQ.title;
+		let movieId = movieForRoleQ.id;
+		let castObject = quizApp.getCasts(movieId);
+		$.when(castObject).then(function(data) {
+			let roleMovieCast = data.cast;
+			// console.log(roleMovieCast);
+			quizApp.generateRoleQuestion(roleMovieCast);
+		});
+		
+	}
+	
+	// Which role did (this actor) play in (this movie)?
+	quizApp.generateRoleQuestion = function(cast) {
+		let correctCharacter = cast[0].character;
+		let correctName = cast[0].name;
+		let wrongCharactersArray = [];
+		let randoNum = Math.floor(Math.random() * cast.length) + 1;
+		let wrongCharacter = cast[randoNum].character;
+		// console.log(wrongCharacter);
+		for (let i = 0; i < 3; i++) {
+			wrongCharactersArray.push(wrongCharacter);
+		}
+		let allCharacters = wrongCharactersArray;
+		allCharacters.push(correctCharacter);
+		let roleQuestionObject = {
+			wrongCharactersArray: wrongCharactersArray,
+			correctCharacter: correctCharacter,
+			allCharacters: allCharacters,
+			question: 'What character did (X) play in (Y)?',
+			type: 'multipleChoice'
+		}
+		return roleQuestionObject;
+	}
+
+	quizApp.generateFiveRandomRoleQuestion = function() {
+	 		let roleQuestionArray = [];
+			for (var i = 0; i < 4; i++) {
+				roleQuestionArray.push(quizApp.generateRoleQuestion());
+			}
+			quizApp.roleQuestionArray = roleQuestionArray;
+			return roleQuestionArray;
+	 	}
+
+
  	quizApp.init = function() {
  		quizApp.events();
  	};
+
 
  	$(function() {
  		quizApp.init();
