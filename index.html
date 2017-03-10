@@ -131,17 +131,18 @@
 		<div class="wrapper">
 			<h3 class="questions__text"> {Question} </h3>
 			<!--Multiple Choice-->
-			<button type="submit" class="multiple__answer1">Mult Answer One</button>
-			<button type="submit" class="multiple__answer2">Mult Answer Two</button>
-			<button type="submit" class="multiple__answer3">Mult Answer Three</button>
-			<button type="submit" class="multiple__answer4">Mult Answer Three</button>
-			<button type="submit" class="multiple__answer5">Mult Answer Three</button>
+			<button type="submit" name="multi" class="multiple__answer1">Mult Answer One</button>
+			<button type="submit" name="multi" class="multiple__answer2">Mult Answer Two</button>
+			<button type="submit" name="multi" class="multiple__answer3">Mult Answer Three</button>
+			<button type="submit" name="multi" class="multiple__answer4">Mult Answer Three</button>
+			
 
 			<!--Radio Buttons-->
-			<form action="submit">
-			  <input type="radio" name="radio_answer1" value="radio_answer1"> Rad Answer One
-			  <input type="radio" name="radio_answer2" value="radio_answer2"> Rad Answer Two
-			  <input type="radio" name="radio_answer3" value="radio_answer3"> Rad Answer Three
+			<form action="submit" id="radioButtonsYear">
+				<input type="radio" name="radio_answer" value="radio_answer1"><label for="answerOne" id="answerOne">Rad Answer One</label>
+				<input type="radio" name="radio_answer" value="radio_answer2"><label for="answerTwo" id="answerTwo">Rad Answer Two</label>
+				<input type="radio" name="radio_answer" value="radio_answer3"><label for="answerThree" id="answerThree">Rad Answer Three</label>
+			  	<input type="radio" name="radio_answer" value="radio_answer4"><label for="answerFour" id="answerFour">Rad Answer Four</label>	
 			</form>
 			<!--Input Field-->
 			<form name="" id="" class="">

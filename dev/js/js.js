@@ -257,6 +257,7 @@
  	 	let correctReleaseDate = movieByYearAnswer.release_date;
  	 	//slicing it to only get the year and not the month and day
  	 	let yearNum = (correctReleaseDate.slice(0,4) * 1);
+
  	 	// variable for wrong answers
  	 	let wrongAnswers = quizApp.generateWrongYears(yearNum);
 
@@ -313,9 +314,22 @@
  		$('.questions__text').append(quizApp.generateYear().question);
 
  		// console.log(quizApp.generateYear().question);
- 		var multiButtons = Math.floor(Math.random() * quizApp.generateYear().allYears;
- 		console.log(multiButtons)
+ 		// var multiButtons = Math.floor(Math.random() * quizApp.generateYear().allYears[0];
+ 		let questionobj = quizApp.generateYear();
+
+ 		$('#answerOne').text(questionobj.allYears[0])
+ 		$('#answerTwo').text(questionobj.allYears[1])
+ 		$('#answerThree').text(questionobj.allYears[2])
+ 		$('#answerFour').text(questionobj.allYears[3])
+ 		// console.log(questionobj.allYears)
  	}
 
 
- 	//return info in object
+ 	//when user selects a button (on.click) determine if it is the wrong or right answer
+
+ 	// $('#radioButtonsYear').on('click', function(e) {
+ 	// 	console.log(quizApp.generateYear.questionobj.yearNum)
+ 	// });
+ 	//prompt or alert appears
+ 	// if answer is right go to next wuestion 
+ 	//else keep choosing
