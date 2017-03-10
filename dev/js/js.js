@@ -153,8 +153,8 @@
  			quizApp.generateFiveRevQuestions();
  			quizApp.generateFiveYearQuestions();
  			quizApp.generateFiveRandomDescQuestion();
- 			// quizApp.generateFiveRandomRoleQuestion();
- 			quizApp.generateRoleQuestion();
+ 			quizApp.generateFiveRandomRoleQuestion();
+ 		
  		});
  	}
 
@@ -359,9 +359,7 @@
 		$.when(castObject).then(function(data) {
 			let roleMovieCast = data.cast;
 			// console.log(roleMovieCast);
-			if (roleMovieCast !== undefined) {
-				quizApp.generateRoleQuestion(roleMovieCast);
-			}
+				quizApp.roleQuestionArray.push(quizApp.generateRoleQuestion(roleMovieCast));
 		});
 	}
 	
@@ -373,7 +371,7 @@
 		let wrongCharactersArray = [];
 
 		for (let i = 0; i < 3; i++) {
-			let randoNum = Math.floor(Math.random() * cast.length) + 2;
+			let randoNum = Math.floor(Math.random() * cast.length) + 1;
 			// console.log('Cast Length', cast.length, 'Random Number',randoNum);
 			let wrongCharacter = cast[randoNum].character;
 			console.log(wrongCharacter);
@@ -393,15 +391,16 @@
 		return roleQuestionObject;
 	}
 
-	// quizApp.generateFiveRandomRoleQuestion = function() {
-	//  		let roleQuestionArray = [];
-	// 		for (var i = 0; i < 4; i++) {
-	// 			roleQuestionArray.push(quizApp.generateRoleQuestion());
-	// 		}
-	// 		quizApp.roleQuestionArray = roleQuestionArray;
- // 			console.log('Role Question');
-	// 		return roleQuestionArray;
-	// }
+	quizApp.generateFiveRandomRoleQuestion = function(cast) {
+	 		let roleQuestionArray = [];
+	 		quizApp.roleQuestionArray = roleQuestionArray;
+			for (var i = 0; i < 4; i++) {
+				quizApp.pickRoleMovie();
+			}
+			
+ 			console.log('Role Question');
+			return quizApp.roleQuestionArray;
+	}
 
 
  	quizApp.init = function() {
