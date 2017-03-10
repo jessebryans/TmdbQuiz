@@ -52,8 +52,15 @@
  					}) //end of double loop
  				quizApp.moviedata = finalArray;
  				quizApp.generateCastData();
+
  			});
  		});
+
+ 		$('.question10').on('click', function(e) {
+ 			e.preventDefault();
+ 			quizApp.displayQuestion(quizApp.generateYear());
+ 		});
+
  	}
 
  	quizApp.removeTitleFromDescription = function(description, title) {
@@ -186,7 +193,7 @@
  			wrongAnswers: wrongAnswers,
  			answer: yearNum,
  			allYears: allYears,
- 			question: 'Which year was this movie release?',
+ 			question: 'Which year was this movie released?',
  			type: 'multipleChoice',
  			movie: movieByYearAnswer,
  			title: movieByYearAnswer.title
@@ -232,6 +239,33 @@
  		}
  		return castArray;
  	}
+
+ 	//Displaying Question
+
+ 	quizApp.displayQuestion = (question) => {
+ 		$('.questions__text').empty('');
+ 		$('.questions__text').append(quizApp.generateYear().question);
+
+ 		// console.log(quizApp.generateYear().question);
+ 		// var multiButtons = Math.floor(Math.random() * quizApp.generateYear().allYears[0];
+ 		let questionobj = quizApp.generateYear();
+
+ 		$('#answerOne').text(questionobj.allYears[0])
+ 		$('#answerTwo').text(questionobj.allYears[1])
+ 		$('#answerThree').text(questionobj.allYears[2])
+ 		$('#answerFour').text(questionobj.allYears[3])
+ 		// console.log(questionobj.allYears)
+ 	}
+
+
+ 	//when user selects a button (on.click) determine if it is the wrong or right answer
+
+ 	// $('#radioButtonsYear').on('click', function(e) {
+ 	// 	console.log(quizApp.generateYear.questionobj.yearNum)
+ 	// });
+ 	//prompt or alert appears
+ 	// if answer is right go to next wuestion 
+ 	//else keep choosing
 
  	quizApp.generateCastQuestion = function(movie) {
  		let correctAnswer = quizApp.castdata[movie].cast[0].name;
