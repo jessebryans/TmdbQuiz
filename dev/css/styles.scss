@@ -1,2 +1,4 @@
 @import "partials/normalize"; // just the code from .setup+tab
+@import "partials/_globalStuff"; // wrapper lives here...
 @import "partials/variables"; //lets put our css variables in here?
+@import "partials/landingScreen"; //css for the landing section
