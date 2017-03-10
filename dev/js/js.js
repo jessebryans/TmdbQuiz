@@ -56,17 +56,6 @@
  			});
  		});
 
- 		$('.question').on('click', function() {
- 			// quizApp.displayQuestion(quizApp.generateYear());
- 			quizApp.getReleaseYearData();
- 			console.log(quizApp.getReleaseYearData())
- 		});
-
- 		// $('.buttonAnswer').on('submit', function(e) {
- 		// 	e.preventDefault();
- 		// 	quizApp.
- 		// });
-
  	}
 
  	quizApp.removeTitleFromDescription = function(description, title) {
@@ -275,10 +264,9 @@
  		// $('.question').data('question','quizApp.yearQuestionArray[3]');
  		for(var i = 0; i < 4; i++) {
  			$('.question').data('question','quizApp.yearQuestionArray[i]');
+ 			// quizApp.yearQuestionArray[i] = i
  		}
- 	}
-
- 	quizApp.displayRelease
+ 	}	
 
 
  	//when user selects a button (on.click) determine if it is the wrong or right answer
@@ -425,6 +413,7 @@
 
  	quizApp.init = function() {
  		quizApp.events();
+ 		quizApp.getReleaseYearData();
  	};
 
 
