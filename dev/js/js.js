@@ -12,7 +12,7 @@
  		firebase.initializeApp(config);
  		quizApp.dbref = firebase.database().ref();
  		quizApp.dbref.on('value', (response) => {
- 				let (response.val());
+ 				// let response.val();
  			})
  			// quizApp.dbref.child("highScores");
 
@@ -53,7 +53,6 @@
  			quizApp.userDecadeChoice = year;
  			// Make an ajax call for the following nine years after #yearSelection
  			quizApp.movieChecks = [];
-
  			for (i = 0; i < 10; i++) {
  				quizApp.movieChecks.push(quizApp.getMovies(year));
  				// console.log("Hello", year);
@@ -87,9 +86,24 @@
  				$(`.questions__options`).append(`<div class="year_${year}"></div>`)
  				$(`.year_${year}`).append(`<label for="year_${year}">${year}</label>`)
  				$(`.year_${year}`).append(`<input type="radio" id="year_${year}"name="${year}" value="${year}">`);
-
  		});
-
+ 		$('.questions__giveUp').on('click', function(event) {
+ 			event.preventDefault();
+ 			$('.questions').fadeOut('slow', function() {
+ 				$('.questions').html(`<div class="wrapper">
+			<button class="questions__giveUp">Pass</button>
+				<div class="questions__text"> 
+				</div>
+				<!--Radio Buttons-->
+				<form action="submit" id="radioButtonsYear">
+					<div class="questions__options">
+						
+					</div>
+					<input type="submit" class="">
+				</form>
+			</div>`)
+ 			});
+ 		});
  				
  			$('.questions__options').append()
  			$('.questions').fadeIn('slow');
@@ -251,7 +265,7 @@
  			let isUnique = true;
 
  			wrongAnswers.forEach(function(year) {
- 				if (year === wrongAnswer) {
+ 				if (year == wrongAnswer) {
  					isUnique = false;
  				}
  			})
