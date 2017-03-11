@@ -85,26 +85,25 @@
  				$(`.year_${year}`).append(`<label for="year_${year}">${year}</label>`)
  				$(`.year_${year}`).append(`<input type="radio" id="year_${year}"name="${year}" value="${year}">`);
  			});
- 			$('.questions__giveUp').on('click', function(event) {
- 				event.preventDefault();
- 				$('.questions').fadeOut('slow', function() {
- 					$('.questions').html(`<div class="wrapper">
-			<button class="questions__giveUp">Pass</button>
-				<div class="questions__text"> 
-				</div>
-				<!--Radio Buttons-->
-				<form action="submit" id="radioButtonsYear">
-					<div class="questions__options">
-						
-					</div>
-					<input type="submit" class="">
-				</form>
-			</div>`)
- 				});
- 			});
-
- 			$('.questions__options').append()
  			$('.questions').fadeIn('slow');
+ 		});
+ 		
+ 		$('.questions').on('click', '.questions__giveUp', function(event) {
+ 			event.preventDefault();
+ 			$('.questions').fadeOut('slow', function() {
+ 				$('.questions').html(`<div class="wrapper">
+						<button class="questions__giveUp">Pass</button>
+							<div class="questions__text"> 
+							</div>
+							<!--Radio Buttons-->
+							<form action="submit" id="radioButtonsYear">
+								<div class="questions__options">
+									
+								</div>
+								<input type="submit" class="">
+							</form>
+						</div>`)
+ 			});
  		});
  	}
 
@@ -200,6 +199,7 @@
  			quizApp.generateFiveRevQuestions();
  			quizApp.generateFiveYearQuestions();
  			quizApp.generateFiveRandomDescQuestion();
+ 			quizApp.populateGameBoard();
  		});
  	}
 
@@ -292,8 +292,6 @@
  		return castArray;
  	}
 
- 	//Displaying Question
-
  	quizApp.displayQuestion = (question) => {
  		$('.questions__text').empty('');
  		$('.questions__text').append(quizApp.generateYear().question);
@@ -308,16 +306,6 @@
  		$('#answerFour').text(questionobj.allYears[3])
  			// console.log(questionobj.allYears)
  	}
-
-
- 	//when user selects a button (on.click) determine if it is the wrong or right answer
-
- 	// $('#radioButtonsYear').on('click', function(e) {
- 	// 	console.log(quizApp.generateYear.questionobj.yearNum)
- 	// });
- 	//prompt or alert appears
- 	// if answer is right go to next wuestion 
- 	//else keep choosing
 
  	quizApp.generateCastQuestion = function(movie) {
  		let correctAnswer = quizApp.castdata[movie].cast[0].name;
@@ -416,7 +404,6 @@
  			// console.log(roleMovieCast);
  			quizApp.generateRoleQuestion(roleMovieCast);
  		});
-
  	}
 
  	// Which role did (this actor) play in (this movie)?
@@ -470,16 +457,16 @@
  		for (var i = 0; i < quizApp.descQuestionArray.length; i++) {
  			let points = '$' + (100 * (i + 1));
  			let question = `quizApp.descQuestionArray[${i}]`;
- 			$('.main__game__category__desc').append(`<li><button class="button${i} gameButton" data-question="${question}">${points}</button></li>`);
+ 			$('.main__game__category__desc').append(`<li><button class="button${i} gameButton gameButtonDesc" data-question="${question}">${points}</button></li>`);
  		}
  		for (var i = 0; i < quizApp.revQuestionArray.length; i++) {
  			let points = '$' + (100 * (i + 1));
  			let question = `quizApp.revQuestionArray[${i}]`;
- 			$('.main__game__category__rev').append(`<li><button class="button${i} gameButton" data-question="${question}">${points}</button></li>`);
+ 			$('.main__game__category__rev').append(`<li><button class="button${i} gameButton gameButtonRev" data-question="${question}">${points}</button></li>`);
  		}
  		for (var i = 0; i < (quizApp.castQuestions.length - 1); i++) {
  			let points = '$' + (100 * (i + 1));
  			let question = `quizApp.castQuestions[${i}]`;
- 			$('.main__game__category__cast').append(`<li><button class="button${i} gameButton" data-question="${question}">${points}</button></li>`);
+ 			$('.main__game__category__cast').append(`<li><button class="button${i} gameButton gameButtonCast" data-question="${question}">${points}</button></li>`);
  		}
  	}
