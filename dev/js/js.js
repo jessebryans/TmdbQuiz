@@ -76,14 +76,22 @@
  			});
  		});
 
- 		$('.question10').on('click', function(e) {
- 			e.preventDefault();
- 			quizApp.displayQuestion(quizApp.generateYear());
+
+ 		$('.gameCategory').on('click', '.gameButtonYear',  function(event) {
+ 			event.preventDefault();
+ 			let questionAddress = $(this).data().question;
+ 			let questionObj = eval(questionAddress);
+ 			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieTitle"></p>`)
+ 			$('.question__movieTitle').text(questionObj.title)
+ 			questionObj.allYears.forEach((year) => {
+ 				// $('.questions__options').append(`<label for="${year}"">${year}</label>`)
+ 				$('.questions__options').append(`<input type="radio" name="gender" value="female">`);
+
  		});
 
- 		$('.gameCategory').on('click', '.gameButton',  function(event) {
- 			event.preventDefault();
- 			console.log($(this).data());
+ 				
+ 			$('.questions__options').append()
+ 			$('.questions').fadeIn('slow');
  		});
  	}
 
@@ -438,7 +446,7 @@
  		for (var i = 0; i < quizApp.yearQuestionArray.length; i++) {
  			let points = '$' + (100 * (i + 1));
  			let question = `quizApp.yearQuestionArray[${i}]`;
- 			$('.main__game__category__year').append(`<li><button class="button${i} gameButton" data-question="${question}">${points}</button></li>`);
+ 			$('.main__game__category__year').append(`<li><button class="button${i} gameButton gameButtonYear" data-question="${question}">${points}</button></li>`);
  		}
  		for (var i = 0; i < quizApp.descQuestionArray.length; i++) {
  			let points = '$' + (100 * (i + 1));
