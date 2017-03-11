@@ -73,6 +73,7 @@
 
  		$('.gameCategory').on('click', '.gameButton', function(event) {
  			event.preventDefault();
+ 			quizApp.currentQuestionBtn = null;
  			quizApp.currentQuestionBtn = $(this);
  		});
 
@@ -140,33 +141,57 @@
  			// console.log(actualAnswer, userAnswer, actualAnswer == userAnswer)
  			if (actualAnswer == userAnswer) {
  				quizApp.correctAnswer();
- 			}
- 			else {
+ 			} else {
  				quizApp.wrongAnswer();
  			}
  		});
 
  		$('.questions').on('click', '.questions__giveUp', function(event) {
  			event.preventDefault();
- 			$('.questions').fadeOut('slow', function() {
- 				$('.questions').html(`<div class="wrapper">
-						<button class="questions__giveUp">Pass</button>
-							<div class="questions__text"> 
-							</div>
-							<!--Radio Buttons-->
-							<form action="submit" id="radioButtonsYear">
-								<div class="questions__options">
-									
-								</div>
-								<input type="submit" class="">
-							</form>
-						</div>`)
- 			});
- 			let pointsToLose = quizApp.currentQuestionBtn.text().replace('$','') * 1;
- 			let currentPoints = $('.main__header__score').text() * 1;
- 			$('.main__header__score').text(currentPoints - pointsToLose)
- 			quizApp.currentQuestionBtn.remove();
+ 			quizApp.wrongAnswer();
  		});
+ 	}
+
+ 	quizApp.correctAnswer = function() {
+ 		$('.questions').fadeOut('slow', function() {
+ 			$('.questions').html(`<div class="wrapper">
+ 										<button class="questions__giveUp">Pass</button>
+ 											<div class="questions__text"> 
+ 											</div>
+ 											<!--Radio Buttons-->
+ 											<form action="submit" id="radioButtonsYear">
+ 												<div class="questions__options">
+ 													
+ 												</div>
+ 												<input type="submit" class="">
+ 											</form>
+ 										</div>`)
+ 		});
+ 		let pointsToGain = quizApp.currentQuestionBtn.text().replace('$', '') * 1;
+ 		let currentPoints = $('.main__header__score').text() * 1;
+ 		$('.main__header__score').text(currentPoints + pointsToGain)
+ 		quizApp.currentQuestionBtn.remove();
+ 	}
+
+ 	quizApp.wrongAnswer = function() {
+ 		$('.questions').fadeOut('slow', function() {
+ 			$('.questions').html(`<div class="wrapper">
+								<button class="questions__giveUp">Pass</button>
+									<div class="questions__text"> 
+									</div>
+									<!--Radio Buttons-->
+									<form action="submit" id="radioButtonsYear">
+										<div class="questions__options">
+											
+										</div>
+										<input type="submit" class="">
+									</form>
+								</div>`)
+ 		});
+ 		let pointsToLose = quizApp.currentQuestionBtn.text().replace('$', '') * 1;
+ 		let currentPoints = $('.main__header__score').text() * 1;
+ 		$('.main__header__score').text(currentPoints - pointsToLose)
+ 		quizApp.currentQuestionBtn.remove();
  	}
 
  	quizApp.removeTitleFromDescription = function(description, title) {
@@ -264,7 +289,7 @@
  			quizApp.generateFiveYearQuestions();
  			quizApp.generateFiveRandomDescQuestion();
  			$.when(...quizApp.revMovieCheckArray).done(() => quizApp.populateGameBoard());
- 			
+
  		});
  	}
 
@@ -376,9 +401,7 @@
 
  	//when user selects a button (on.click) determine if it is the wrong or right answer
 
- 		$('#radioButtonsYear').on('click', function(e) {
- 		console.log(quizApp.generateYear.questionobj.yearNum)
- 	});
+
  	//prompt or alert appears
  	// if answer is right go to next wuestion 
  	//else keep choosing
