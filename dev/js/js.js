@@ -87,7 +87,21 @@
  			});
  			$('.questions').fadeIn('slow');
  		});
- 		
+
+ 		$('.gameCategory').on('click', '.gameButtonDesc', function(event) {
+ 			event.preventDefault();
+ 			let questionAddress = $(this).data().question;
+ 			let questionObj = eval(questionAddress);
+ 			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieDesc"></p>`)
+ 			$('.question__movieDesc').text(questionObj.descriptionBlanked)
+ 			questionObj.wrongAnswers.forEach((title, movieTitle) => {
+ 				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
+ 				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
+ 				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="${movieTitle}" value="${title}">`);
+ 			});
+ 			$('.questions').fadeIn('slow');
+ 		});
+
  		$('.questions').on('click', '.questions__giveUp', function(event) {
  			event.preventDefault();
  			$('.questions').fadeOut('slow', function() {
@@ -115,7 +129,9 @@
  		titleWords.forEach((word, index) => { //removes non alphanumeric characters from each word (IE Max: becomes Max)
 
  			titleWords[index] = titleWords[index].replace(/\W/g, '');
- 			newDescription = newDescription.replace(new RegExp(titleWords[index], 'gi'), '*Blank*');
+ 			if (word.toLowerCase() !== 'to' && word.toLowerCase() !== 'a' && word.toLowerCase() !== 'is' && word.toLowerCase() !== 'and' && word.toLowerCase() !== 'the' && word.toLowerCase() !== 'it' && word.length > 1) {
+ 				newDescription = newDescription.replace(new RegExp(titleWords[index], 'gi'), '*Blank*');
+ 			}
 
  		});
  		return {
