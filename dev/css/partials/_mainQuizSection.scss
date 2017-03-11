@@ -1,0 +1,20 @@
+section.main {
+	height: 100vh;
+}
+.main__header {
+	text-align: center;
+}
+
+
+.main__game__categories {
+	display: flex;
+	justify-content: space-around;
+	text-align: center;
+
+}
+
+.main__game input[type=submit] {
+	display: block;
+	width: 400px;
+	margin: 0 auto;
+}
