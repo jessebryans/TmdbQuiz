@@ -14,4 +14,14 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 	}
+	input {
+		padding: 5px;
+		border-radius: 3px;
+		border: none;
+		background-color: grey;
+		color: white;
+	}
+	input:hover {
+		
+	}
 }
