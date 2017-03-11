@@ -71,6 +71,11 @@
  			});
  		});
 
+ 		$('.gameCategory').on('click', '.gameButton', function(event) {
+ 			event.preventDefault();
+ 			quizApp.currentQuestionBtn = null;
+ 			quizApp.currentQuestionBtn = $(this);
+ 		});
 
  		$('.gameCategory').on('click', '.gameButtonYear', function(event) {
  			event.preventDefault();
@@ -81,7 +86,7 @@
  			questionObj.allYears.forEach((year) => {
  				$(`.questions__options`).append(`<div class="year_${year}"></div>`)
  				$(`.year_${year}`).append(`<label for="year_${year}">${year}</label>`)
- 				$(`.year_${year}`).append(`<input type="radio" id="year_${year}"name="${year}" value="${year}">`);
+ 				$(`.year_${year}`).append(`<input type="radio" id="year_${year}"name="answer" value="${year}">`);
  			});
  			$('.questions').fadeIn('slow');
  		});
@@ -95,7 +100,7 @@
  			questionObj.wrongAnswers.forEach((title, movieTitle) => {
  				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
- 				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="${movieTitle}" value="${title}">`);
+ 				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="answer" value="${title}">`);
  			});
  			$('.questions').fadeIn('slow');
  		});
@@ -109,7 +114,7 @@
  			questionObj.allOptions.forEach((title, movieTitle) => {
  				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
- 				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="${movieTitle}" value="${title}">`);
+ 				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="answer" value="${title}">`);
  			});
  			$('.questions').fadeIn('slow');
  		});
@@ -123,28 +128,70 @@
  			questionObj.allOptions.forEach((title, movieTitle) => {
  				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
- 				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="${movieTitle}" value="${title}">`);
+ 				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="answer" value="${title}">`);
  			});
  			$('.questions').fadeIn('slow');
  		});
 
+ 		$('.questions').on('submit', 'form', function(event) {
+ 			event.preventDefault();
+ 			let currentQuestionObj = eval(quizApp.currentQuestionBtn.data().question);
+ 			let actualAnswer = currentQuestionObj.answer;
+ 			let userAnswer = $('.questions input[type=radio]:checked').val();
+ 			// console.log(actualAnswer, userAnswer, actualAnswer == userAnswer)
+ 			if (actualAnswer == userAnswer) {
+ 				quizApp.correctAnswer();
+ 			} else {
+ 				quizApp.wrongAnswer();
+ 			}
+ 		});
+
  		$('.questions').on('click', '.questions__giveUp', function(event) {
  			event.preventDefault();
- 			$('.questions').fadeOut('slow', function() {
- 				$('.questions').html(`<div class="wrapper">
-						<button class="questions__giveUp">Pass</button>
-							<div class="questions__text"> 
-							</div>
-							<!--Radio Buttons-->
-							<form action="submit" id="radioButtonsYear">
-								<div class="questions__options">
-									
-								</div>
-								<input type="submit" class="">
-							</form>
-						</div>`)
- 			});
+ 			quizApp.wrongAnswer();
  		});
+ 	}
+
+ 	quizApp.correctAnswer = function() {
+ 		$('.questions').fadeOut('slow', function() {
+ 			$('.questions').html(`<div class="wrapper">
+ 										<button class="questions__giveUp">Pass</button>
+ 											<div class="questions__text"> 
+ 											</div>
+ 											<!--Radio Buttons-->
+ 											<form action="submit" id="radioButtonsYear">
+ 												<div class="questions__options">
+ 													
+ 												</div>
+ 												<input type="submit" class="">
+ 											</form>
+ 										</div>`)
+ 		});
+ 		let pointsToGain = quizApp.currentQuestionBtn.text().replace('$', '') * 1;
+ 		let currentPoints = $('.main__header__score').text() * 1;
+ 		$('.main__header__score').text(currentPoints + pointsToGain)
+ 		quizApp.currentQuestionBtn.remove();
+ 	}
+
+ 	quizApp.wrongAnswer = function() {
+ 		$('.questions').fadeOut('slow', function() {
+ 			$('.questions').html(`<div class="wrapper">
+								<button class="questions__giveUp">Pass</button>
+									<div class="questions__text"> 
+									</div>
+									<!--Radio Buttons-->
+									<form action="submit" id="radioButtonsYear">
+										<div class="questions__options">
+											
+										</div>
+										<input type="submit" class="">
+									</form>
+								</div>`)
+ 		});
+ 		let pointsToLose = quizApp.currentQuestionBtn.text().replace('$', '') * 1;
+ 		let currentPoints = $('.main__header__score').text() * 1;
+ 		$('.main__header__score').text(currentPoints - pointsToLose)
+ 		quizApp.currentQuestionBtn.remove();
  	}
 
  	quizApp.removeTitleFromDescription = function(description, title) {
@@ -242,7 +289,7 @@
  			quizApp.generateFiveYearQuestions();
  			quizApp.generateFiveRandomDescQuestion();
  			$.when(...quizApp.revMovieCheckArray).done(() => quizApp.populateGameBoard());
- 			
+
  		});
  	}
 
@@ -354,9 +401,7 @@
 
  	//when user selects a button (on.click) determine if it is the wrong or right answer
 
- 		$('#radioButtonsYear').on('click', function(e) {
- 		console.log(quizApp.generateYear.questionobj.yearNum)
- 	});
+
  	//prompt or alert appears
  	// if answer is right go to next wuestion 
  	//else keep choosing
