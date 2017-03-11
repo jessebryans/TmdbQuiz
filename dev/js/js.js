@@ -1,5 +1,12 @@
  	const quizApp = {};
 
+ 	quizApp.shuffle = function(a) {
+    for (let i = a.length; i; i--) {
+        let j = Math.floor(Math.random() * i);
+        [a[i - 1], a[j]] = [a[j], a[i - 1]];
+    }
+}
+
  	quizApp.firebaseInit = function() {
  		// Initialize Firebase
  		var config = {
@@ -92,6 +99,7 @@
  			let questionObj = eval(questionAddress);
  			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieTitle"></p>`)
  			$('.question__movieTitle').text(questionObj.title)
+ 			quizApp.shuffle(questionObj.allYears);
  			questionObj.allYears.forEach((year) => {
  				$(`.questions__options`).append(`<div class="year_${year}"></div>`)
  				$(`.year_${year}`).append(`<label for="year_${year}">${year}</label>`)
@@ -106,6 +114,7 @@
  			let questionObj = eval(questionAddress);
  			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieDesc"></p>`)
  			$('.question__movieDesc').text(questionObj.descriptionBlanked)
+ 			quizApp.shuffle(questionObj.wrongAnswers);
  			questionObj.wrongAnswers.forEach((title, movieTitle) => {
  				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
@@ -119,7 +128,8 @@
  			let questionAddress = $(this).data().question;
  			let questionObj = eval(questionAddress);
  			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieTitle"></p>`)
- 			$('.question__movieTitle').text(questionObj.title)
+ 			$('.question__movieTitle').text(questionObj.title);
+ 			quizApp.shuffle(questionObj.allOptions);
  			questionObj.allOptions.forEach((title, movieTitle) => {
  				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
@@ -134,6 +144,7 @@
  			let questionObj = eval(questionAddress);
  			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieTitle"></p>`)
  			$('.question__movieTitle').text(questionObj.year);
+ 			quizApp.shuffle(questionObj.allOptions);
  			questionObj.allOptions.forEach((title, movieTitle) => {
  				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
