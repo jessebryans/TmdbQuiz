@@ -76,7 +76,7 @@
  		});
 
 
- 		$('.gameCategory').on('click', '.gameButtonYear',  function(event) {
+ 		$('.gameCategory').on('click', '.gameButtonYear', function(event) {
  			event.preventDefault();
  			let questionAddress = $(this).data().question;
  			let questionObj = eval(questionAddress);
@@ -86,11 +86,11 @@
  				$(`.questions__options`).append(`<div class="year_${year}"></div>`)
  				$(`.year_${year}`).append(`<label for="year_${year}">${year}</label>`)
  				$(`.year_${year}`).append(`<input type="radio" id="year_${year}"name="${year}" value="${year}">`);
- 		});
- 		$('.questions__giveUp').on('click', function(event) {
- 			event.preventDefault();
- 			$('.questions').fadeOut('slow', function() {
- 				$('.questions').html(`<div class="wrapper">
+ 			});
+ 			$('.questions__giveUp').on('click', function(event) {
+ 				event.preventDefault();
+ 				$('.questions').fadeOut('slow', function() {
+ 					$('.questions').html(`<div class="wrapper">
 			<button class="questions__giveUp">Pass</button>
 				<div class="questions__text"> 
 				</div>
@@ -102,9 +102,9 @@
 					<input type="submit" class="">
 				</form>
 			</div>`)
+ 				});
  			});
- 		});
- 				
+
  			$('.questions__options').append()
  			$('.questions').fadeIn('slow');
  		});
@@ -265,10 +265,14 @@
  			let isUnique = true;
 
  			wrongAnswers.forEach(function(year) {
- 				if (year == wrongAnswer) {
+ 				if (year === wrongAnswer) {
  					isUnique = false;
  				}
  			})
+
+ 			if (correctAnswer === wrongAnswer) {
+ 				isUnique = false;
+ 			}
  			if (isUnique === true) {
  				wrongAnswers.push(wrongAnswer)
  			}
