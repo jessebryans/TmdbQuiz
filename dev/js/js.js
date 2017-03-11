@@ -247,6 +247,7 @@
  		$('.questions__text').empty('');
  		$('.questions__text').append(quizApp.generateYear().question);
 
+
  		// console.log(quizApp.generateYear().question);
  		// var multiButtons = Math.floor(Math.random() * quizApp.generateYear().allYears[0];
  		let questionobj = quizApp.generateYear();
@@ -261,9 +262,9 @@
 
  	//when user selects a button (on.click) determine if it is the wrong or right answer
 
- 	// $('#radioButtonsYear').on('click', function(e) {
- 	// 	console.log(quizApp.generateYear.questionobj.yearNum)
- 	// });
+ 		$('#radioButtonsYear').on('click', function(e) {
+ 		console.log(quizApp.generateYear.questionobj.yearNum)
+ 	});
  	//prompt or alert appears
  	// if answer is right go to next wuestion 
  	//else keep choosing
