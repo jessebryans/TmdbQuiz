@@ -84,8 +84,9 @@
  			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieTitle"></p>`)
  			$('.question__movieTitle').text(questionObj.title)
  			questionObj.allYears.forEach((year) => {
- 				// $('.questions__options').append(`<label for="${year}"">${year}</label>`)
- 				$('.questions__options').append(`<input type="radio" name="gender" value="female">`);
+ 				$(`.questions__options`).append(`<div class="year_${year}"></div>`)
+ 				$(`.year_${year}`).append(`<label for="year_${year}">${year}</label>`)
+ 				$(`.year_${year}`).append(`<input type="radio" id="year_${year}"name="${year}" value="${year}">`);
 
  		});
 
