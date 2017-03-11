@@ -15,8 +15,6 @@
  				// let response.val();
  			})
  			// quizApp.dbref.child("highScores");
-
-
  	}
 
 
@@ -112,8 +110,9 @@
 
  	quizApp.removeTitleFromDescription = function(description, title) {
  		let titleWords = title;
- 		var newDescription = description;
- 		titleWords = titleWords.split(''); //splits the title into an array of words
+ 		let newDescription = description;
+ 		titleWords = titleWords.split(' '); //splits the title into an array of words
+ 		console.log(titleWords);
  		titleWords.forEach((word, index) => { //removes non alphanumeric characters from each word (IE Max: becomes Max)
 
  			titleWords[index] = titleWords[index].replace(/\W/g, '');
@@ -130,6 +129,7 @@
  	quizApp.questionDescription = function(descriptionObject) {
  		let actualTitle = descriptionObject.title;
  		let description = descriptionObject.description;
+ 		let backupDesc = descriptionObject.origDec;
  		let wrongAnswers = [];
  		let movieObject = quizApp.moviedata; //This needs to target the results of our ajax request
  		let randoNum = Math.floor(Math.random() * (movieObject.length - 4)) + 1
@@ -146,7 +146,7 @@
  			question: 'Name the movie that this text is describing!',
  			type: 'multipleChoice',
  			descriptionBlanked: description,
- 			origDesc: descriptionObject.origDesc
+ 			origDesc: backupDesc
  		}
  		return questionObject;
  	}
