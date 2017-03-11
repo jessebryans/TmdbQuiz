@@ -12,7 +12,16 @@
  		firebase.initializeApp(config);
  		quizApp.dbref = firebase.database().ref();
  		quizApp.dbref.on('value', (response) => {
- 				// let response.val();
+ 				let highScores = response.val().highScores;
+ 				highScores = highScores.sort((a, b) => {
+ 					return b.score - a.score
+ 				});
+ 				highScores.forEach((score, index) => {
+ 					$('.scores__results').append(`<li><p><span class="userName scoreName${index}"></span><span class="userScore scoreNum${index}"></span></p></li>`);
+ 					$(`.scoreName${index}`).text(score.name + ': ');
+ 					$(`.scoreNum${index}`).text(score.score);
+
+ 				})
  			})
  			// quizApp.dbref.child("highScores");
  	}
@@ -398,14 +407,6 @@
  			// console.log(questionobj.allYears)
  	}
 
-
- 	//when user selects a button (on.click) determine if it is the wrong or right answer
-
-
- 	//prompt or alert appears
- 	// if answer is right go to next wuestion 
- 	//else keep choosing
-
  	quizApp.generateCastQuestion = function(movie) {
  		let correctAnswer = quizApp.castdata[movie].cast[0].name;
  		let wrongAnswers = quizApp.getRandomCastArray(movie);
@@ -537,13 +538,7 @@
  		return roleQuestionArray;
  	}
 
- 	quizApp.init = function() {
- 		quizApp.events();
- 	};
 
- 	$(function() {
- 		quizApp.init();
- 	});
 
  	quizApp.populateGameBoard = function() {
  		$('.main__header__score').text('0');
@@ -568,3 +563,12 @@
  			$('.main__game__category__cast').append(`<li><button class="button${i} gameButton gameButtonCast" data-question="${question}">${points}</button></li>`);
  		}
  	}
+ 	
+ 	quizApp.init = function() {
+ 		quizApp.firebaseInit();
+ 		quizApp.events();
+ 	};
+
+ 	$(function() {
+ 		quizApp.init();
+ 	});

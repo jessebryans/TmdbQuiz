@@ -5,6 +5,10 @@ section.main {
 	text-align: center;
 }
 
+.main__header__score:before {
+	content: '$';
+}
+
 
 .main__game__categories {
 	display: flex;
