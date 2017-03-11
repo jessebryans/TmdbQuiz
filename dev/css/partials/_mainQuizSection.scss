@@ -5,12 +5,41 @@ section.main {
 	text-align: center;
 }
 
+.main__header__score:before {
+	content: '$';
+}
+
 
 .main__game__categories {
 	display: flex;
 	justify-content: space-around;
 	text-align: center;
+	button {
+		background-color: blue;
+		border-radius: 5px;
+		height: 50px;
+		width: 100px;
+		border: 1px solid white;
+		color: yellow;
+		// 
+	}
+	button:hover {
+		border: 1.5px solid yellow;
+		color: yellow;
+	}
+}
 
+input {
+		padding: 5px;
+		border-radius: 3px;
+		border: none;
+		background-color: grey;
+		color: white;
+		transition: .5s;
+	}
+
+input:hover {
+		color: black;
 }
 
 .main__game input[type=submit] {
