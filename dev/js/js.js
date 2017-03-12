@@ -143,7 +143,7 @@
  			quizApp.castCheckArray.push(castCheck);
 
  			$.when(castCheck).done((data) => {
- 				console.log('first');
+ 				// console.log('first');
  				quizApp.castdata[movieTitle] = data;
  				quizApp.castdata[movieTitle].title = movieTitle;
  			});
@@ -359,39 +359,37 @@
 		let movieObject	= quizApp.moviedata
 		let randoNum = Math.floor(Math.random() * (movieObject.length)) + 1;
 		let movieForRoleQ = movieObject[randoNum];
-		// let movieTitle = movieForRoleQ.title;
+		let movieTitle = movieForRoleQ.title; // ERROR (NOT DEFINED)
+		// console.log('Movie title =>', movieTitle);
 		let movieId = movieForRoleQ.id;
 		let castObject = quizApp.getCasts(movieId);
 		$.when(castObject).then(function(data) {
 			let roleMovieCast = data.cast;
-			// console.log(roleMovieCast);
-				quizApp.roleQuestionArray.push(quizApp.generateRoleQuestion(roleMovieCast));
+			quizApp.generateRoleQuestion(roleMovieCast);
 		});
 	}
 	
 	// Which role did (this actor) play in (this movie)?
 	quizApp.generateRoleQuestion = function(cast) {
-		console.log("Cast", cast);
 		let correctCharacter = cast[0].character;
 		let correctName = cast[0].name;
+		
 		let wrongCharactersArray = [];
-
 		for (let i = 0; i < 3; i++) {
 			let randoNum = Math.floor(Math.random() * cast.length) + 1;
-			// console.log('Cast Length', cast.length, 'Random Number',randoNum);
-			let wrongCharacter = cast[randoNum].character;
-			console.log(wrongCharacter);
+			let wrongCharacter = cast[randoNum].character; // ERROR (NOT DEFINED)
+			// console.log('Wrong character =>', wrongCharacter);
 			wrongCharactersArray.push(wrongCharacter);
 		}
-
+		// console.log('Characters Array', wrongCharactersArray);
 		let allCharacters = wrongCharactersArray;
 		allCharacters.push(correctCharacter);
-
+		console.log('All Characters', allCharacters);
 		let roleQuestionObject = {
 			wrongAnswers: wrongCharactersArray,
 			correctAnswer: correctCharacter,
 			characters: allCharacters,
-			question: 'What character did (X) play in (Y)?',
+			question: `What character did ${correctCharacter} play in ${quizApp.movieId}?`,
 			type: 'multipleChoice'
 		}
 		return roleQuestionObject;
@@ -401,10 +399,8 @@
 	 		let roleQuestionArray = [];
 	 		quizApp.roleQuestionArray = roleQuestionArray;
 			for (var i = 0; i < 4; i++) {
-				quizApp.pickRoleMovie();
+				quizApp.roleQuestionArray.push(quizApp.pickRoleMovie());
 			}
-			
- 			console.log('Role Question');
 			return quizApp.roleQuestionArray;
 	}
 
