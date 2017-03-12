@@ -333,7 +333,7 @@
  			quizApp.generateFiveRevQuestions();
  			quizApp.generateFiveYearQuestions();
  			quizApp.generateFiveRandomDescQuestion();
- 			quizApp.generateFiveRandomRoleQuestion();
+ 			// quizApp.generateFiveRandomRoleQuestion();
  			$.when(...quizApp.revMovieCheckArray).done(() => quizApp.populateGameBoard());
  		});
  	}

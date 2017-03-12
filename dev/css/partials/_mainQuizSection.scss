@@ -5,9 +5,13 @@ section.main {
 	text-align: center;
 }
 
-.main__header__score:before {
-	content: '$';
+.main__header__score {
+	color: $lightbluegreen;
 }
+
+// .main__header__score:before {
+// 	content: '$';
+// }
 
 .main__header h2{
 	margin: 0;
@@ -15,21 +19,38 @@ section.main {
 
 
 .main__game__categories {
+	width: 80%;
 	display: flex;
 	justify-content: space-around;
 	text-align: center;
+	margin: auto;
 	button {
-		background-color: blue;
+		font-size: 25px;
+		background-color: #00A;
 		border-radius: 5px;
+		width: 100%;
+		margin: 10px 0;
 		height: 50px;
 		width: 100px;
-		border: 1px solid white;
+		// border: 1px solid white;
 		color: yellow;
 		
 	}
 	button:hover {
-		border: 1.5px solid yellow;
+		border-color: yellow;
 		color: yellow;
+	}
+	.gameCategory {
+		font-size: 25px;
+		margin: 10px 20px;
+		padding: 0;
+	}
+	.category {
+		color: #FFF;
+		padding: 15px;
+		margin: 0 0 20px 0;
+		background: $darkblue;
+		border-radius: 7px;
 	}
 }
 
@@ -61,6 +82,9 @@ section.main {
 	margin: 0 auto;
 }
 
+#againButton {
+	margin: 50px auto;
+}
 
 //======================================
 //            MEDIA QUERIES              
