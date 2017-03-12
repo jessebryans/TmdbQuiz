@@ -1,5 +1,31 @@
  	const quizApp = {};
 
+ 	quizApp.firebaseInit = function() {
+ 		// Initialize Firebase
+ 		var config = {
+ 			apiKey: "AIzaSyDHFyTJOQj_A7LGzwiw9bnvCkPhBXXviIU",
+ 			authDomain: "trebeksquad-quiz-app.firebaseapp.com",
+ 			databaseURL: "https://trebeksquad-quiz-app.firebaseio.com",
+ 			storageBucket: "trebeksquad-quiz-app.appspot.com",
+ 			messagingSenderId: "434381434216"
+ 		};
+ 		firebase.initializeApp(config);
+ 		quizApp.dbref = firebase.database().ref();
+ 		quizApp.dbref.on('value', (response) => {
+ 				let highScores = response.val().highScores;
+ 				highScores = highScores.sort((a, b) => {
+ 					return b.score - a.score
+ 				});
+ 				highScores.forEach((score, index) => {
+ 					$('.scores__results').append(`<li><p><span class="userName scoreName${index}"></span><span class="userScore scoreNum${index}"></span></p></li>`);
+ 					$(`.scoreName${index}`).text(score.name + ': ');
+ 					$(`.scoreNum${index}`).text(score.score);
+
+ 				})
+ 			})
+ 			// quizApp.dbref.child("highScores");
+ 	}
+
  	quizApp.getMovies = function(year) {
  		return $.ajax({
  			url: 'https://api.themoviedb.org/3/discover/movie',
@@ -33,7 +59,6 @@
  			quizApp.userDecadeChoice = year;
  			// Make an ajax call for the following nine years after #yearSelection
  			quizApp.movieChecks = [];
-
  			for (i = 0; i < 10; i++) {
  				quizApp.movieChecks.push(quizApp.getMovies(year));
  				// console.log("Hello", year);
@@ -52,25 +77,143 @@
  					}) //end of double loop
  				quizApp.moviedata = finalArray;
  				quizApp.generateCastData();
-
  			});
  		});
 
- 		$('.question10').on('click', function(e) {
- 			e.preventDefault();
- 			quizApp.displayQuestion(quizApp.generateYear());
+ 		$('.gameCategory').on('click', '.gameButton', function(event) {
+ 			event.preventDefault();
+ 			quizApp.currentQuestionBtn = null;
+ 			quizApp.currentQuestionBtn = $(this);
  		});
 
+ 		$('.gameCategory').on('click', '.gameButtonYear', function(event) {
+ 			event.preventDefault();
+ 			let questionAddress = $(this).data().question;
+ 			let questionObj = eval(questionAddress);
+ 			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieTitle"></p>`)
+ 			$('.question__movieTitle').text(questionObj.title)
+ 			questionObj.allYears.forEach((year) => {
+ 				$(`.questions__options`).append(`<div class="year_${year}"></div>`)
+ 				$(`.year_${year}`).append(`<label for="year_${year}">${year}</label>`)
+ 				$(`.year_${year}`).append(`<input type="radio" id="year_${year}"name="answer" value="${year}">`);
+ 			});
+ 			$('.questions').fadeIn('slow');
+ 		});
+
+ 		$('.gameCategory').on('click', '.gameButtonDesc', function(event) {
+ 			event.preventDefault();
+ 			let questionAddress = $(this).data().question;
+ 			let questionObj = eval(questionAddress);
+ 			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieDesc"></p>`)
+ 			$('.question__movieDesc').text(questionObj.descriptionBlanked)
+ 			questionObj.wrongAnswers.forEach((title, movieTitle) => {
+ 				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
+ 				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
+ 				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="answer" value="${title}">`);
+ 			});
+ 			$('.questions').fadeIn('slow');
+ 		});
+
+ 		$('.gameCategory').on('click', '.gameButtonCast', function(event) {
+ 			event.preventDefault();
+ 			let questionAddress = $(this).data().question;
+ 			let questionObj = eval(questionAddress);
+ 			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieTitle"></p>`)
+ 			$('.question__movieTitle').text(questionObj.title)
+ 			questionObj.allOptions.forEach((title, movieTitle) => {
+ 				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
+ 				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
+ 				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="answer" value="${title}">`);
+ 			});
+ 			$('.questions').fadeIn('slow');
+ 		});
+
+ 		$('.gameCategory').on('click', '.gameButtonRev', function(event) {
+ 			event.preventDefault();
+ 			let questionAddress = $(this).data().question;
+ 			let questionObj = eval(questionAddress);
+ 			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieTitle"></p>`)
+ 			$('.question__movieTitle').text(questionObj.year);
+ 			questionObj.allOptions.forEach((title, movieTitle) => {
+ 				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
+ 				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
+ 				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="answer" value="${title}">`);
+ 			});
+ 			$('.questions').fadeIn('slow');
+ 		});
+
+ 		$('.questions').on('submit', 'form', function(event) {
+ 			event.preventDefault();
+ 			let currentQuestionObj = eval(quizApp.currentQuestionBtn.data().question);
+ 			let actualAnswer = currentQuestionObj.answer;
+ 			let userAnswer = $('.questions input[type=radio]:checked').val();
+ 			// console.log(actualAnswer, userAnswer, actualAnswer == userAnswer)
+ 			if (actualAnswer == userAnswer) {
+ 				quizApp.correctAnswer();
+ 			} else {
+ 				quizApp.wrongAnswer();
+ 			}
+ 		});
+
+ 		$('.questions').on('click', '.questions__giveUp', function(event) {
+ 			event.preventDefault();
+ 			quizApp.wrongAnswer();
+ 		});
+ 	}
+
+ 	quizApp.correctAnswer = function() {
+ 		$('.questions').fadeOut('slow', function() {
+ 			$('.questions').html(`<div class="wrapper">
+ 										<button class="questions__giveUp">Pass</button>
+ 											<div class="questions__text"> 
+ 											</div>
+ 											<!--Radio Buttons-->
+ 											<form action="submit" id="radioButtonsYear">
+ 												<div class="questions__options">
+ 													
+ 												</div>
+ 												<input type="submit" class="">
+ 											</form>
+ 										</div>`)
+ 		});
+ 		let pointsToGain = quizApp.currentQuestionBtn.text().replace('$', '') * 1;
+ 		let currentPoints = $('.main__header__score').text() * 1;
+ 		$('.main__header__score').text(currentPoints + pointsToGain)
+ 		quizApp.currentQuestionBtn.remove();
+ 	}
+
+ 	quizApp.wrongAnswer = function() {
+ 		$('.questions').fadeOut('slow', function() {
+ 			$('.questions').html(`<div class="wrapper">
+								<button class="questions__giveUp">Pass</button>
+									<div class="questions__text"> 
+									</div>
+									<!--Radio Buttons-->
+									<form action="submit" id="radioButtonsYear">
+										<div class="questions__options">
+											
+										</div>
+										<input type="submit" class="">
+									</form>
+								</div>`)
+ 		});
+ 		let pointsToLose = quizApp.currentQuestionBtn.text().replace('$', '') * 1;
+ 		let currentPoints = $('.main__header__score').text() * 1;
+ 		$('.main__header__score').text(currentPoints - pointsToLose)
+ 		quizApp.currentQuestionBtn.remove();
  	}
 
  	quizApp.removeTitleFromDescription = function(description, title) {
  		let titleWords = title;
- 		var newDescription = description;
- 		titleWords = titleWords.split(''); //splits the title into an array of words
+ 		let newDescription = description;
+ 		titleWords = titleWords.split(' '); //splits the title into an array of words
+ 		console.log(titleWords);
  		titleWords.forEach((word, index) => { //removes non alphanumeric characters from each word (IE Max: becomes Max)
 
  			titleWords[index] = titleWords[index].replace(/\W/g, '');
- 			newDescription = newDescription.replace(new RegExp(titleWords[index], 'gi'), '*Blank*');
+ 			if (word.toLowerCase() !== 'of' && word.toLowerCase() !== 'will' && word.toLowerCase() !== 'can' && word.toLowerCase() !== 'or' && word.toLowerCase() !== 'if' && word.toLowerCase() !== 'on' && word.toLowerCase() !== 'to' && word.toLowerCase() !== 'a' && word.toLowerCase() !== 'is' && word.toLowerCase() !== 'and' && word.toLowerCase() !== 'the' && word.toLowerCase() !== 'it' && word.length > 1) {
+ 				newDescription = newDescription.replace(new RegExp(titleWords[index], 'gi'), '*Blank*');
+ 			}
 
  		});
  		return {
@@ -83,6 +226,7 @@
  	quizApp.questionDescription = function(descriptionObject) {
  		let actualTitle = descriptionObject.title;
  		let description = descriptionObject.description;
+ 		let backupDesc = descriptionObject.origDec;
  		let wrongAnswers = [];
  		let movieObject = quizApp.moviedata; //This needs to target the results of our ajax request
  		let randoNum = Math.floor(Math.random() * (movieObject.length - 4)) + 1
@@ -99,7 +243,7 @@
  			question: 'Name the movie that this text is describing!',
  			type: 'multipleChoice',
  			descriptionBlanked: description,
- 			origDesc: descriptionObject.origDesc
+ 			origDesc: backupDesc
  		}
  		return questionObject;
  	}
@@ -154,7 +298,7 @@
  			quizApp.generateFiveYearQuestions();
  			quizApp.generateFiveRandomDescQuestion();
  			quizApp.generateFiveRandomRoleQuestion();
- 		
+ 			$.when(...quizApp.revMovieCheckArray).done(() => quizApp.populateGameBoard());
  		});
  	}
 
@@ -224,6 +368,10 @@
  					isUnique = false;
  				}
  			})
+
+ 			if (correctAnswer === wrongAnswer) {
+ 				isUnique = false;
+ 			}
  			if (isUnique === true) {
  				wrongAnswers.push(wrongAnswer)
  			}
@@ -243,11 +391,10 @@
  		return castArray;
  	}
 
- 	//Displaying Question
-
  	quizApp.displayQuestion = (question) => {
  		$('.questions__text').empty('');
  		$('.questions__text').append(quizApp.generateYear().question);
+
 
  		// console.log(quizApp.generateYear().question);
  		// var multiButtons = Math.floor(Math.random() * quizApp.generateYear().allYears[0];
@@ -259,16 +406,6 @@
  		$('#answerFour').text(questionobj.allYears[3])
  			// console.log(questionobj.allYears)
  	}
-
-
- 	//when user selects a button (on.click) determine if it is the wrong or right answer
-
- 	// $('#radioButtonsYear').on('click', function(e) {
- 	// 	console.log(quizApp.generateYear.questionobj.yearNum)
- 	// });
- 	//prompt or alert appears
- 	// if answer is right go to next wuestion 
- 	//else keep choosing
 
  	quizApp.generateCastQuestion = function(movie) {
  		let correctAnswer = quizApp.castdata[movie].cast[0].name;
@@ -288,7 +425,6 @@
  		return questionObject;
  	}
 
-
  	quizApp.generateCastQuestionsArray = function() {
  		castQuestionArray = [];
  		for (movie in quizApp.castdata) {
@@ -299,8 +435,7 @@
  		return castQuestionArray
  	}
 
-
- 	quizApp.getRandomYearRevenueMovies = function(year){
+ 	quizApp.getRandomYearRevenueMovies = function(year) {
  		return $.ajax({
  			url: 'https://api.themoviedb.org/3/discover/movie',
  			type: 'GET',
@@ -329,25 +464,28 @@
  			quizApp.generateRevenueQuestion();
  		}
  		$.when(...quizApp.revMovieCheckArray).done(function(...data) {
- 			data.forEach((index)=> {	
-			let yearRevMovies = index[0].results;
-			let questionObject = {};
-			let randomIndex = Math.floor(Math.random() * ((yearRevMovies.length - 3) - 0 + 1));
-			let wrongAnswers = [];
-			let randomWrongIndexStart = Math.floor(Math.random() * (yearRevMovies.length - randomIndex + 1))
-			for (var i = 0; i < 2; i++) {
-				let wrongAnswer = yearRevMovies[(randomWrongIndexStart + i)].title;
-				wrongAnswers.push(wrongAnswer)
-			}
-			// questionObject.year = randomYear;
-			questionObject.moviesByRev = yearRevMovies;
-			questionObject.question = 'Which of these movies made the largest amount of money?'
-			questionObject.answer = yearRevMovies[randomIndex].title;
-			questionObject.answerObject = yearRevMovies[randomIndex];
-			questionObject.year = yearRevMovies[randomIndex].release_date.slice(0,4) * 1;
-			questionObject.wrongAnswers = wrongAnswers;
-			questionObject.type = 'multipleChoice';
-			revQuestionArray.push(questionObject);
+ 			data.forEach((index) => {
+ 				let yearRevMovies = index[0].results;
+ 				let questionObject = {};
+ 				let randomIndex = Math.floor(Math.random() * ((yearRevMovies.length - 3) - 0 + 1));
+ 				let wrongAnswers = [];
+ 				let randomWrongIndexStart = Math.floor(Math.random() * (yearRevMovies.length - randomIndex + 1))
+ 				for (var i = 0; i < 2; i++) {
+ 					let wrongAnswer = yearRevMovies[(randomWrongIndexStart + i)].title;
+ 					wrongAnswers.push(wrongAnswer)
+ 				}
+ 				// questionObject.year = randomYear;
+ 				questionObject.moviesByRev = yearRevMovies;
+ 				questionObject.question = 'Which of these movies made the largest amount of money?'
+ 				questionObject.answer = yearRevMovies[randomIndex].title;
+ 				questionObject.answerObject = yearRevMovies[randomIndex];
+ 				questionObject.year = yearRevMovies[randomIndex].release_date.slice(0, 4) * 1;
+ 				questionObject.wrongAnswers = wrongAnswers;
+ 				let allOptions = [...questionObject.wrongAnswers];
+ 				allOptions.push(questionObject.answer);
+ 				questionObject.allOptions = allOptions;
+ 				questionObject.type = 'multipleChoice';
+ 				revQuestionArray.push(questionObject);
  			})
  		});
  		quizApp.revQuestionArray = revQuestionArray;
@@ -373,7 +511,6 @@
 	quizApp.generateRoleQuestion = function(cast) {
 		let correctCharacter = cast[0].character;
 		let correctName = cast[0].name;
-		
 		let wrongCharactersArray = [];
 		for (let i = 0; i < 3; i++) {
 			let randoNum = Math.floor(Math.random() * cast.length) + 1;
@@ -388,7 +525,7 @@
 		let roleQuestionObject = {
 			wrongAnswers: wrongCharactersArray,
 			correctAnswer: correctCharacter,
-			characters: allCharacters,
+			allCharacters: allCharacters,
 			question: `What character did ${correctCharacter} play in ${quizApp.movieId}?`,
 			type: 'multipleChoice'
 		}
@@ -400,15 +537,40 @@
 	 		quizApp.roleQuestionArray = roleQuestionArray;
 			for (var i = 0; i < 4; i++) {
 				quizApp.roleQuestionArray.push(quizApp.pickRoleMovie());
+				// quizApp.roleQuestionArray.push(quizApp.generateRoleQuestion());
 			}
 			return quizApp.roleQuestionArray;
 	}
 
 
+ 	quizApp.populateGameBoard = function() {
+ 		$('.main__header__score').text('0');
+ 		for (var i = 0; i < quizApp.yearQuestionArray.length; i++) {
+ 			let points = '$' + (100 * (i + 1));
+ 			let question = `quizApp.yearQuestionArray[${i}]`;
+ 			$('.main__game__category__year').append(`<li><button class="button${i} gameButton gameButtonYear" data-question="${question}">${points}</button></li>`);
+ 		}
+ 		for (var i = 0; i < quizApp.descQuestionArray.length; i++) {
+ 			let points = '$' + (100 * (i + 1));
+ 			let question = `quizApp.descQuestionArray[${i}]`;
+ 			$('.main__game__category__desc').append(`<li><button class="button${i} gameButton gameButtonDesc" data-question="${question}">${points}</button></li>`);
+ 		}
+ 		for (var i = 0; i < quizApp.revQuestionArray.length; i++) {
+ 			let points = '$' + (100 * (i + 1));
+ 			let question = `quizApp.revQuestionArray[${i}]`;
+ 			$('.main__game__category__rev').append(`<li><button class="button${i} gameButton gameButtonRev" data-question="${question}">${points}</button></li>`);
+ 		}
+ 		for (var i = 0; i < (quizApp.castQuestions.length - 1); i++) {
+ 			let points = '$' + (100 * (i + 1));
+ 			let question = `quizApp.castQuestions[${i}]`;
+ 			$('.main__game__category__cast').append(`<li><button class="button${i} gameButton gameButtonCast" data-question="${question}">${points}</button></li>`);
+ 		}
+ 	}
+ 	
  	quizApp.init = function() {
+ 		quizApp.firebaseInit();
  		quizApp.events();
  	};
-
 
  	$(function() {
  		quizApp.init();
