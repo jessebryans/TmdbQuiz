@@ -271,20 +271,6 @@
  		let allTitles = wrongAnswers;
  		allTitles.push(actualTitle);
 
- 		// Shuffle answers array
- 		shuffle = function(answers) {
- 		  var m = answers.length, t, i;
- 		  while (m) {
- 		    i = Math.floor(Math.random() * m--);
- 		    t = answers[m];
- 		    answers[m] = answers[i];
- 		    answers[i] = t;
- 		  }
- 		  return answers;
- 		}
- 		// Calls the shuffle to run
- 		allTitles = shuffle(allTitles);
-
  		const questionObject = {
  			wrongAnswers: wrongAnswers,
  			answer: actualTitle,
@@ -385,20 +371,6 @@
  		allYears.push(...wrongAnswers); //...spreads array out into comma separated values
  		allYears.push(yearNum)
 
- 		// Shuffle answers array
- 		shuffle = function(answers) {
- 		  var m = answers.length, t, i;
- 		  while (m) {
- 		    i = Math.floor(Math.random() * m--);
- 		    t = answers[m];
- 		    answers[m] = answers[i];
- 		    answers[i] = t;
- 		  }
- 		  return answers;
- 		}
- 		// Calls the shuffle to run
- 		allYears = shuffle(allYears);
-
  		const questionObject = {
  			wrongAnswers: wrongAnswers,
  			answer: yearNum,
@@ -479,20 +451,6 @@
  		allOptions.push(...wrongAnswers);
  		allOptions.push(correctAnswer);
 
- 		// Shuffle answers array
- 		shuffle = function(answers) {
- 		  var m = answers.length, t, i;
- 		  while (m) {
- 		    i = Math.floor(Math.random() * m--);
- 		    t = answers[m];
- 		    answers[m] = answers[i];
- 		    answers[i] = t;
- 		  }
- 		  return answers;
- 		}
- 		// Calls the shuffle to run
- 		allOptions = shuffle(allOptions);
-
  		let questionObject = {
  			wrongAnswers: wrongAnswers,
  			answer: correctAnswer,
@@ -565,20 +523,6 @@
  				allOptions.push(questionObject.answer);
  				questionObject.allOptions = allOptions;
 
- 				// Shuffle answers array
- 				shuffle = function(answers) {
- 				  var m = answers.length, t, i;
- 				  while (m) {
- 				    i = Math.floor(Math.random() * m--);
- 				    t = answers[m];
- 				    answers[m] = answers[i];
- 				    answers[i] = t;
- 				  }
- 				  return answers;
- 				}
- 				// Calls the shuffle to run
- 				allOptions = shuffle(allOptions);
-
  				questionObject.type = 'multipleChoice';
  				revQuestionArray.push(questionObject);
  			})
@@ -589,9 +533,11 @@
 
 
 	quizApp.pickRoleMovie = function() {
+		let roleMovieArray = [];
 		let movieObject	= quizApp.moviedata
 		let randoNum = Math.floor(Math.random() * (movieObject.length)) + 1;
 		let movieForRoleQ = movieObject[randoNum];
+		roleMovieArray.push(movieForRoleQ);
 		let movieTitle = movieForRoleQ.title; // ERROR - 'title' UNDEFINED
 		// console.log('Movie title =>', movieTitle);
 		let movieId = movieForRoleQ.id;
@@ -622,20 +568,6 @@
 			let allCharacters = wrongCharactersArray;
 			allCharacters.push(correctCharacter);
 			// console.log('All Characters', allCharacters);
-
-			// Shuffle answers array
-			shuffle = function(answers) {
-			  var m = answers.length, t, i;
-			  while (m) {
-			    i = Math.floor(Math.random() * m--);
-			    t = answers[m];
-			    answers[m] = answers[i];
-			    answers[i] = t;
-			  }
-			  return answers;
-			}
-			// Calls the shuffle to run
-			allCharacters = shuffle(allCharacters);
 			
 			roleQuestionObject.wrongAnswers = wrongCharactersArray;
 			roleQuestionObject.correctAnswer = correctCharacter;
