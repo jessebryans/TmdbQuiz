@@ -86,29 +86,31 @@ section.main {
 	margin: 50px auto;
 }
 
-// .main__game__window {
-// 	position: relative;
-// 	svg {
-// 		min-width: 100%;
-//         // height: 100px;
-//         width: 100%;
-// 	}    
-// }
+//======================================
+//            MEDIA QUERIES              
+//======================================
 
-// .maing__game__windowLightL{
-// 	position: absolute;
-// 		svg {
-// 		// min-width: 100%;
-//         // height: 100px;
-//         width: 100%;
-// 	}  
-// }
 
-// .maing__game__windowLightR{
-// 	position: absolute;
-// 		svg {
-// 		// min-width: 100%;
-//         // height: 100px;
-//         width: 100%;
-// 	}  
-// }
+@media (max-width: 1120px) {
+	
+}
+
+// Portrait tablet and small desktops
+@media (max-width: 940px) {
+	
+}
+ 
+// Landscape phone to portrait tablet
+@media (max-width: 767px) {
+	
+}
+ 
+// Landscape phones and down
+@media (max-width: 480px) {
+	
+}
+
+
+@media (max-width: 400px) {
+
+}
