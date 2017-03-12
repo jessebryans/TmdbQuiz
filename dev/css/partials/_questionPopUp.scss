@@ -7,41 +7,97 @@
 	z-index: 999;
 	background: rgba(0,0,0,0.2);
 	.wrapper {
-		background: white;
+		background-color: rgba(11, 64, 100, 0.9);
 		padding: 40px 25px;
 		position: absolute;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
 		width: 100%;
+		color: $lightbluegreen;
 	}
 	h3 {
 		text-align: center;
+		font-size: 30px;
 	}
 	p {
 		text-align: center;
-		color: red;
+		color: $limegreen;
+		font-size: 20px;
 		&:after, &:before {
 			content: '"';
 		}
 	}
 	.questions__options {
 		display: flex;
-		justify-content: space-around;
-	}
-	input[type=submit] {
-		display: block;
-		margin: 0 auto;
-	}
-	.questions__giveUp {
-		position: absolute;
-		top: 10px;
-		right: 10px;
-		background: rgba(255, 100, 100, 0.5);
-		border: rgba(255, 100, 100, 1) solid 1px;
+		justify-content: center;
+		input[type='radio'] {
+			margin-left: 10px;
+			transform: translate(0%, 14%);
+
+		}
+		label {
+			margin-left: 45px;
+		}
+		label:last-child {
+			margin-left: 0;
+		}
 	}
 
 }
+	input[type=submit] {
+		display: block;
+		margin: 0 auto;
+		margin-top: 30px;
+		width: 100px; 
+		background-color: $lightbluegreen;
+		color: $darkblue;
+		text-transform: uppercase;
+		font-weight: 600;
+	}
+	.questions__giveUp {
+		// border: rgba(255, 100, 100, 1) solid 1px;
+		position: absolute;
+		text-transform: uppercase;
+		font-weight: 600;
+		top: 10px;
+		right: 10px;
+		padding: 5px 10px;
+		background: $lightbluegreen;
+		border: none;
+		color: $darkblue;
+	}
+	.questions__giveUp:hover {
+		background: $limegreen;
+	}
 
 
 
+//======================================
+//            MEDIA QUERIES              
+//======================================
+
+
+@media (max-width: 1120px) {
+	
+}
+
+// Portrait tablet and small desktops
+@media (max-width: 940px) {
+	
+}
+ 
+// Landscape phone to portrait tablet
+@media (max-width: 767px) {
+	
+}
+ 
+// Landscape phones and down
+@media (max-width: 480px) {
+	
+}
+
+
+@media (max-width: 400px) {
+
+}

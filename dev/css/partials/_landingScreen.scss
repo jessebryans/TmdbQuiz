@@ -1,17 +1,19 @@
 .landingSplash {
-	width: 70%;
-	// height: 60%;
-	margin: 0 auto;
-	background-color: rgba(11, 64, 100, 0.9);
-	position: absolute;
-	// border-radius: 20px;
+	width: 75%;
+	height: 80%;
+	// margin: 0 auto;
+	display: flex;
+	margin: auto;
+	background-color: rgba(11, 64, 100, 1);
+	position: fixed;
+	border-radius: 10px;
 	z-index: 100;
 	left: 0;
 	right: 0;
 	top: 0;
 	bottom: 0;
 	padding-top: 50px;
-	margin-top: 20px;
+	margin-top: 10vh;
 	.landingSplash__title {
 		// position: absolute;
 		// top: 30%;
@@ -54,11 +56,9 @@
 		flex-direction: column;
 		font-size: 20px;
 		color: $lightbluegreen;
-		padding-top: 100px;
+		margin-top: 50px;
 	}
 	select {
-		padding: 15px;
-		height: 20px;
 		color: black;
 	}
 	button {
@@ -70,10 +70,76 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		border-radius: 3px;
-		margin-top: 20px;
+		margin-top: 10px;
 	}
 	// button:hover {
 		
 	//  }
 }
 
+
+//======================================
+//            MEDIA QUERIES              
+//======================================
+
+
+@media (max-width: 1120px) {
+	
+}
+
+// Portrait tablet and small desktops
+@media (max-width: 940px) {
+	
+}
+ 
+// Landscape phone to portrait tablet
+@media (max-width: 767px) {
+	.landingSplash {
+		height: 80%;
+	}
+}
+
+@media (max-width: 610px) {
+	.landingSplash {
+		height: 80%;
+		.landingSplash__title h1 {
+		font-size: 20px;
+		line-height: 10px;
+		text-transform: uppercase;
+		letter-spacing: 10px;
+		text-align: center;
+		padding: 0 20px;
+		text-shadow:
+		    7px 7px 0 $darkblue,
+		    -3px -2px 0 $darkblue,  
+		    3px -2px 0 $darkblue,
+		    -3px 2px 0 $darkblue,
+		     3px 2px 0 $darkblue;
+	}
+}
+ 
+// Landscape phones and down
+@media (max-width: 480px) {
+	.landingSplash {
+		height: 80%;
+		.landingSplash__title h1 {
+		font-size: 30px;
+		line-height: 10px;
+		text-transform: uppercase;
+		letter-spacing: 2px;
+		text-align: center;
+		padding: 0 20px;
+		text-shadow:
+		    7px 7px 0 $darkblue,
+		    -3px -2px 0 $darkblue,  
+		    3px -2px 0 $darkblue,
+		    -3px 2px 0 $darkblue,
+		     3px 2px 0 $darkblue;
+		}
+	}
+}
+
+
+@media (max-width: 400px) {
+
+}
