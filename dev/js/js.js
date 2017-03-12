@@ -1,5 +1,13 @@
  	const quizApp = {};
 
+ 	// courtesy of http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
+ 	quizApp.shuffle = function(a) {
+ 		for (let i = a.length; i; i--) {
+ 			let j = Math.floor(Math.random() * i);
+ 			[a[i - 1], a[j]] = [a[j], a[i - 1]];
+ 		}
+ 	}
+
  	quizApp.firebaseInit = function() {
  		// Initialize Firebase
  		var config = {
@@ -92,6 +100,7 @@
  			let questionObj = eval(questionAddress);
  			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieTitle"></p>`)
  			$('.question__movieTitle').text(questionObj.title)
+ 			quizApp.shuffle(questionObj.allYears);
  			questionObj.allYears.forEach((year) => {
  				$(`.questions__options`).append(`<div class="year_${year}"></div>`)
  				$(`.year_${year}`).append(`<label for="year_${year}">${year}</label>`)
@@ -106,6 +115,7 @@
  			let questionObj = eval(questionAddress);
  			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieDesc"></p>`)
  			$('.question__movieDesc').text(questionObj.descriptionBlanked)
+ 			quizApp.shuffle(questionObj.wrongAnswers);
  			questionObj.wrongAnswers.forEach((title, movieTitle) => {
  				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
@@ -119,7 +129,8 @@
  			let questionAddress = $(this).data().question;
  			let questionObj = eval(questionAddress);
  			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieTitle"></p>`)
- 			$('.question__movieTitle').text(questionObj.title)
+ 			$('.question__movieTitle').text(questionObj.title);
+ 			quizApp.shuffle(questionObj.allOptions);
  			questionObj.allOptions.forEach((title, movieTitle) => {
  				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
@@ -134,6 +145,7 @@
  			let questionObj = eval(questionAddress);
  			$('.questions__text').html(`<h3>${questionObj.question}</h3><p class="question__movieTitle"></p>`)
  			$('.question__movieTitle').text(questionObj.year);
+ 			quizApp.shuffle(questionObj.allOptions);
  			questionObj.allOptions.forEach((title, movieTitle) => {
  				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
@@ -161,6 +173,13 @@
  		});
  	}
 
+ 	quizApp.endOfGameCheck = function() {
+ 		if (quizApp.questionsRemaining <= 0) {
+ 			console.log('Game is over!! score:' + quizApp.userScore)
+ 		}
+ 	}
+
+
  	quizApp.correctAnswer = function() {
  		$('.questions').fadeOut('slow', function() {
  			$('.questions').html(`<div class="wrapper">
@@ -175,11 +194,15 @@
  												<input type="submit" class="">
  											</form>
  										</div>`)
+ 			quizApp.questionsRemaining--;
+ 			quizApp.endOfGameCheck();
  		});
  		let pointsToGain = quizApp.currentQuestionBtn.text().replace('$', '') * 1;
- 		let currentPoints = $('.main__header__score').text() * 1;
- 		$('.main__header__score').text(currentPoints + pointsToGain)
+ 		let currentPoints = quizApp.userScore;
+ 		quizApp.userScore = currentPoints + pointsToGain;
+ 		$('.main__header__score').text(quizApp.userScore);
  		quizApp.currentQuestionBtn.remove();
+
  	}
 
  	quizApp.wrongAnswer = function() {
@@ -196,12 +219,23 @@
 										<input type="submit" class="">
 									</form>
 								</div>`)
+ 			quizApp.questionsRemaining--;
+ 			quizApp.endOfGameCheck();
  		});
  		let pointsToLose = quizApp.currentQuestionBtn.text().replace('$', '') * 1;
- 		let currentPoints = $('.main__header__score').text() * 1;
+ 		let currentPoints = quizApp.userScore;
+ 		quizApp.userScore = currentPoints - pointsToLose;
  		$('.main__header__score').text(currentPoints - pointsToLose)
  		quizApp.currentQuestionBtn.remove();
+
  	}
+
+ 	quizApp.endOfGameCheck = function() {
+ 		if (quizApp.questionsRemaining <= 0) {
+ 			alert('Game Over!');
+ 		}
+ 	}
+
 
  	quizApp.removeTitleFromDescription = function(description, title) {
  		let titleWords = title;
@@ -626,25 +660,31 @@
 
  	quizApp.populateGameBoard = function() {
  		$('.main__header__score').text('0');
+ 		quizApp.questionsRemaining = 0;
  		for (var i = 0; i < quizApp.yearQuestionArray.length; i++) {
  			let points = '$' + (100 * (i + 1));
  			let question = `quizApp.yearQuestionArray[${i}]`;
  			$('.main__game__category__year').append(`<li><button class="button${i} gameButton gameButtonYear" data-question="${question}">${points}</button></li>`);
+ 			quizApp.questionsRemaining++;
  		}
  		for (var i = 0; i < quizApp.descQuestionArray.length; i++) {
  			let points = '$' + (100 * (i + 1));
  			let question = `quizApp.descQuestionArray[${i}]`;
  			$('.main__game__category__desc').append(`<li><button class="button${i} gameButton gameButtonDesc" data-question="${question}">${points}</button></li>`);
+ 			quizApp.questionsRemaining++;
  		}
  		for (var i = 0; i < quizApp.revQuestionArray.length; i++) {
  			let points = '$' + (100 * (i + 1));
  			let question = `quizApp.revQuestionArray[${i}]`;
  			$('.main__game__category__rev').append(`<li><button class="button${i} gameButton gameButtonRev" data-question="${question}">${points}</button></li>`);
+ 			quizApp.questionsRemaining++;
+
  		}
  		for (var i = 0; i < (quizApp.castQuestions.length - 1); i++) {
  			let points = '$' + (100 * (i + 1));
  			let question = `quizApp.castQuestions[${i}]`;
  			$('.main__game__category__cast').append(`<li><button class="button${i} gameButton gameButtonCast" data-question="${question}">${points}</button></li>`);
+ 			quizApp.questionsRemaining++;
  		}
  		// for (var i = 0; i < (quizApp.roleQuestionArray.length - 1); i++) {
  		// 	let points = '$' + (100 * (i + 1));
@@ -652,8 +692,9 @@
  		// 	$('.main__game__category__role').append(`<li><button class="button${i} gameButton gameButtonRole" data-question="${question}">${points}</button></li>`);
  		// }
  	}
- 	
+
  	quizApp.init = function() {
+ 		quizApp.userScore = 0;
  		quizApp.firebaseInit();
  		quizApp.events();
  	};
