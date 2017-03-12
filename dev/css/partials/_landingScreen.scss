@@ -1,9 +1,11 @@
 .landingSplash {
 	width: 70%;
-	// height: 60%;
-	margin: 0 auto;
+	height: 80%;
+	// margin: 0 auto;
+	display: flex;
+	margin: auto;
 	background-color: rgba(11, 64, 100, 0.9);
-	position: absolute;
+	position: fixed;
 	// border-radius: 20px;
 	z-index: 100;
 	left: 0;
@@ -11,7 +13,7 @@
 	top: 0;
 	bottom: 0;
 	padding-top: 50px;
-	margin-top: 20px;
+	// margin-top: 40px;
 	.landingSplash__title {
 		// position: absolute;
 		// top: 30%;
@@ -54,11 +56,9 @@
 		flex-direction: column;
 		font-size: 20px;
 		color: $lightbluegreen;
-		padding-top: 100px;
+		margin-top: 50px;
 	}
 	select {
-		// padding: 15px;
-		// height: 20px;
 		color: black;
 	}
 	button {
@@ -70,7 +70,7 @@
 		font-weight: 600;
 		text-transform: uppercase;
 		border-radius: 3px;
-		margin-top: 20px;
+		margin-top: 10px;
 	}
 	// button:hover {
 		
