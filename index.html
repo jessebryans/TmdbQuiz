@@ -4,7 +4,7 @@
 		<meta charset="UTF-8">
 		<title>TrebekSquad Jeopardy Game </title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="public/css/style.css">
+		<link rel="stylesheet" href="public/css/styles.css">
 		<!--Google Fonts -->
 		<!-- font-family: 'Roboto Slab', serif; -->
 		<!-- font-family: 'Open Sans', sans-serif; -->
@@ -19,6 +19,7 @@
 			<div class="container">
 				<section class="landingSplash">
 					<div class="wrapper">
+						<div class="landingSplash__container">
 						<div class="landingSplash__title">
 							<h1>The Movie Database Quiz!</h1>
 							<p>By the Trebek Squad: Peter E., Michelle C., Jesse B. and Mark W.</p>
@@ -34,6 +35,7 @@
 							</select>
 							<button type="submit" value="Play" id="submitButton">Play</button>
 						</form>
+						</div>
 					</div>
 				</section>
 				<!--SPLASH PAGE END -->
@@ -41,12 +43,14 @@
 				<!--GAME PAGE START -->
 				<section class="main">
 					<div class="wrapper">
+					<div class="main__container window__game">
 						<header class="main__header">
 							<h2 class="main__header__title">Trebek Squad Trivia</h2>
 							<p class="main__header__score"> {Score} </p>
 						</header>
 						<!--GAME BOARD-->
 						<!--main go here -->
+						<!-- <div class="window__game"> -->
 						<div class="main__game__categories">
 							<ul class="main__game__category__year gameCategory">
 								<li class="category1">What Year Did ___ Come Out?</li>
@@ -64,8 +68,9 @@
 								<li class="category5">???</li>
 							</ul>
 						</div>
+						<!-- </div> -->
 						<input type="submit" value="Play Again" id="againButton">
-						
+					</div>
 					</div>
 				</section>
 				<!--GAME PAGE END -->

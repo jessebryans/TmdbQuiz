@@ -13,7 +13,7 @@ gulp.task('styles', () => {
 	return gulp.src('./dev/css/**/*.scss') // '**' any folder inside of, '*' any file with the extension of .scss
 		.pipe(sass().on('error', sass.logError)) // on Error display message: 'error'
 		.pipe(autoprefixer())
-		.pipe(concat('style.css'))
+		.pipe(concat('styles.css'))
 		.pipe(gulp.dest('./public/css'))
 		.pipe(reload({stream: true}));
 });

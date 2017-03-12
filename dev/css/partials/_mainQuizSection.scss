@@ -9,6 +9,10 @@ section.main {
 	content: '$';
 }
 
+.main__header h2{
+	margin: 0;
+}
+
 
 .main__game__categories {
 	display: flex;
@@ -21,7 +25,7 @@ section.main {
 		width: 100px;
 		border: 1px solid white;
 		color: yellow;
-		// 
+		
 	}
 	button:hover {
 		border: 1.5px solid yellow;
@@ -29,24 +33,35 @@ section.main {
 	}
 }
 
-input {
-		padding: 5px;
-		border-radius: 3px;
-		border: none;
-		background-color: grey;
-		color: white;
-		transition: .5s;
-	}
-
-input:hover {
-		color: black;
+.window__game{
+	background: url('/../images/game_window_full.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
+	width: 100%;
+	height: 100vh;
 }
+
+// input {
+// 		padding: 5px;
+// 		border-radius: 3px;
+// 		border: none;
+// 		background-color: grey;
+// 		color: white;
+// 		transition: .5s;
+// 	}
+
+// input:hover {
+// 		color: black;
+// }
 
 .main__game input[type=submit] {
 	display: block;
 	width: 400px;
 	margin: 0 auto;
 }
+
+
 
 // .main__game__window {
 // 	position: relative;
