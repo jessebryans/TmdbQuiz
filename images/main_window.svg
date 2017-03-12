@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 16.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="game_x5F_window" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px"
+	 y="0px" width="1034.167px" height="639.333px" viewBox="0 0 1034.167 639.333" enable-background="new 0 0 1034.167 639.333"
+	 xml:space="preserve">
+<path fill="#1A1A1A" d="M1.167,80.344c3.292-0.309,160.788,59.137,224.25,62.118c63.46,2.981,677.831,5.381,677.831,5.381
+	l130.336-71.087l-20.325-50.905L8.652,31.812L1.167,80.344z"/>
+<radialGradient id="SVGID_1_" cx="519.6665" cy="326.6074" r="510.577" gradientUnits="userSpaceOnUse">
+	<stop  offset="0" style="stop-color:#666666"/>
+	<stop  offset="0.2183" style="stop-color:#555555"/>
+	<stop  offset="0.6493" style="stop-color:#292929"/>
+	<stop  offset="1" style="stop-color:#000000"/>
+</radialGradient>
+<rect x="52.667" y="57" fill="url(#SVGID_1_)" width="934" height="582"/>
+<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="513.0112" y1="317.8716" x2="321.0251" y2="133.2128">
+	<stop  offset="0" style="stop-color:#4D4D4D"/>
+	<stop  offset="0.136" style="stop-color:#5E5E5E"/>
+	<stop  offset="0.4061" style="stop-color:#8B8B8B"/>
+	<stop  offset="0.7812" style="stop-color:#D2D2D2"/>
+	<stop  offset="1" style="stop-color:#FFFFFF"/>
+</linearGradient>
+<polygon opacity="0.1" fill="url(#SVGID_2_)" points="52.667,634.282 52.667,52 1025.901,52 "/>
+<linearGradient id="SVGID_3_" gradientUnits="userSpaceOnUse" x1="517.4243" y1="25.4883" x2="517.4243" y2="85.8538">
+	<stop  offset="0" style="stop-color:#666666"/>
+	<stop  offset="1" style="stop-color:#000000"/>
+</linearGradient>
+<path fill="url(#SVGID_3_)" d="M2.362,2.918c0,0,304.533,13.622,508.627,12.358c204.965-1.271,518.678-13.942,522.678-13.942V76.75
+	c0,0-281.83,15.841-523.873,19.647C315.315,99.456,1.181,79.919,1.181,79.919L2.362,2.918z"/>
+</svg>

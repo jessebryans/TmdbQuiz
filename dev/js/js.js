@@ -369,7 +369,7 @@
  			wrongAnswers: wrongAnswers,
  			answer: yearNum,
  			allYears: allYears,
- 			question: 'Which year was this movie released?',
+ 			question: `Which year was ${movieByYearAnswer.title} released?`,
  			type: 'multipleChoice',
  			movie: movieByYearAnswer,
  			title: movieByYearAnswer.title
