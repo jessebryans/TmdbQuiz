@@ -63,6 +63,7 @@
  		$('#submitButton').on('click', (e) => {
  			e.preventDefault();
  			// Multiplied value by one to coerce string into number
+ 			$('.landingSplash').css('display', 'none');
  			let year = ($('#yearSelection').val() * 1);
  			quizApp.userDecadeChoice = year;
  			// Make an ajax call for the following nine years after #yearSelection
