@@ -9,6 +9,10 @@
 	flex-direction: column;
 	justify-content: space-around;
 	align-items: center;
+	.userName {
+		font-family: $openSans;
+		font-weight: bold;
+	}
 	.userScore:before {
 		content: '$';
 	}
@@ -20,9 +24,32 @@
 }
 footer {
 	justify-self: flex-end;
+
 }
 
+.scores_title {
+	font-family: $roboto;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
 
+.highScoreinput {
+	display: none;
+	position: fixed;
+	background: $darkblue;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+	padding: 30px;
+	text-align: center;
+	input[type=submit]{
+		width: 100%;
+	}
+	h2 {
+		font-family: $roboto;
+	}
+}
 
 //======================================
 //            MEDIA QUERIES              
