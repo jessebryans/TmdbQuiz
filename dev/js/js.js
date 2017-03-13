@@ -1,4 +1,4 @@
- 	const quizApp = {};
+	const quizApp = {};
 
  	// courtesy of http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array
  	quizApp.shuffle = function(a) {
@@ -363,7 +363,7 @@
  			quizApp.generateFiveRevQuestions();
  			quizApp.generateFiveYearQuestions();
  			quizApp.generateFiveRandomDescQuestion();
- 			quizApp.generateFiveRandomRoleQuestion();
+ 			// quizApp.generateFiveRandomRoleQuestion();
  			$.when(...quizApp.revMovieCheckArray).done(() => quizApp.populateGameBoard());
  		});
  	}
