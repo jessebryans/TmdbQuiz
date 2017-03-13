@@ -103,7 +103,7 @@
  			$('.question__movieTitle').text(questionObj.title)
  			quizApp.shuffle(questionObj.allYears);
  			questionObj.allYears.forEach((year) => {
- 				$(`.questions__options`).append(`<div class="year_${year}"></div>`)
+ 				$(`.questions__options`).append(`<div class="option year_${year}"></div>`)
  				$(`.year_${year}`).append(`<label for="year_${year}">${year}</label>`)
  				$(`.year_${year}`).append(`<input type="radio" id="year_${year}"name="answer" value="${year}">`);
  			});
@@ -118,7 +118,7 @@
  			$('.question__movieDesc').text(questionObj.descriptionBlanked)
  			quizApp.shuffle(questionObj.wrongAnswers);
  			questionObj.wrongAnswers.forEach((title, movieTitle) => {
- 				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
+ 				$(`.questions__options`).append(`<div class="option movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
  				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="answer" value="${title}">`);
  			});
@@ -133,7 +133,7 @@
  			$('.question__movieTitle').text(questionObj.title);
  			quizApp.shuffle(questionObj.allOptions);
  			questionObj.allOptions.forEach((title, movieTitle) => {
- 				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
+ 				$(`.questions__options`).append(`<div class="option movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
  				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="answer" value="${title}">`);
  			});
@@ -148,7 +148,7 @@
  			$('.question__movieTitle').text(questionObj.year);
  			quizApp.shuffle(questionObj.allOptions);
  			questionObj.allOptions.forEach((title, movieTitle) => {
- 				$(`.questions__options`).append(`<div class="movieTitle_${movieTitle}"></div>`)
+ 				$(`.questions__options`).append(`<div class="option movieTitle_${movieTitle}"></div>`)
  				$(`.movieTitle_${movieTitle}`).append(`<label for="movieTitle_${movieTitle}">${title}</label>`)
  				$(`.movieTitle_${movieTitle}`).append(`<input type="radio" id="movieTitle_${movieTitle}"name="answer" value="${title}">`);
  			});
@@ -184,17 +184,17 @@
  	quizApp.correctAnswer = function() {
  		$('.questions').fadeOut('slow', function() {
  			$('.questions').html(`<div class="wrapper">
- 										<button class="questions__giveUp">Pass</button>
- 											<div class="questions__text"> 
- 											</div>
- 											<!--Radio Buttons-->
- 											<form action="submit" id="radioButtonsYear">
- 												<div class="questions__options">
- 													
- 												</div>
- 												<input type="submit" class="">
- 											</form>
- 										</div>`)
+									<div class="questions__text"> 
+									</div>
+									<button class="questions__giveUp">Pass</button>
+									<!--Radio Buttons-->
+									<form action="submit" id="radioButtonsYear">
+										<div class="questions__options">
+											
+										</div>
+										<input type="submit" class="">
+									</form>
+ 								</div>`)
  			quizApp.questionsRemaining--;
  			quizApp.endOfGameCheck();
  		});
@@ -209,9 +209,9 @@
  	quizApp.wrongAnswer = function() {
  		$('.questions').fadeOut('slow', function() {
  			$('.questions').html(`<div class="wrapper">
-								<button class="questions__giveUp">Pass</button>
 									<div class="questions__text"> 
 									</div>
+									<button class="questions__giveUp">Pass</button>
 									<!--Radio Buttons-->
 									<form action="submit" id="radioButtonsYear">
 										<div class="questions__options">
@@ -276,7 +276,7 @@
  			wrongAnswers: wrongAnswers,
  			answer: actualTitle,
  			allTitles: allTitles,
- 			question: 'Name the movie that this text is describing!',
+ 			question: 'Name this movie!',
  			type: 'multipleChoice',
  			descriptionBlanked: description,
  			origDesc: backupDesc

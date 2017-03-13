@@ -4,7 +4,7 @@
 	// margin: 0 auto;
 	display: flex;
 	margin: auto;
-	background-color: rgba(11, 64, 100, 1);
+	background-color: rgba(11, 64, 100, .97);
 	position: fixed;
 	border-radius: 10px;
 	z-index: 100;
@@ -115,6 +115,7 @@
 		    3px -2px 0 $darkblue,
 		    -3px 2px 0 $darkblue,
 		     3px 2px 0 $darkblue;
+		}
 	}
 }
  
@@ -140,6 +141,6 @@
 }
 
 
-@media (max-width: 400px) {
+// @media (max-width: 400px) {
 
-}
+// }
