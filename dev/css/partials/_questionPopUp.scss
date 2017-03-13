@@ -7,13 +7,13 @@
 	z-index: 999;
 	background: rgba(0,0,0,0.2);
 	.wrapper {
-		background-color: rgba(11, 64, 100, 0.9);
+		background-color: rgba(11, 64, 100, .97);
 		padding: 40px 25px;
-		position: absolute;
+		position: fixed;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		width: 100%;
+		width: 90%;
 		color: $lightbluegreen;
 	}
 	h3 {
@@ -30,74 +30,71 @@
 	}
 	.questions__options {
 		display: flex;
-		justify-content: center;
+		flex-direction: column;
+		align-items: center;
+		.option {
+			margin: 0 0 10px 0;
+		}
 		input[type='radio'] {
 			margin-left: 10px;
-			transform: translate(0%, 14%);
-
 		}
-		label {
-			margin-left: 45px;
-		}
-		label:last-child {
-			margin-left: 0;
-		}
+		// input[type='submit'] {
+		// 	margin: 20px 0;
+		// }
 	}
 
 }
-	input[type=submit] {
-		display: block;
-		margin: 0 auto;
-		margin-top: 30px;
-		width: 100px; 
-		background-color: $lightbluegreen;
-		color: $darkblue;
-		text-transform: uppercase;
-		font-weight: 600;
-	}
-	.questions__giveUp {
-		// border: rgba(255, 100, 100, 1) solid 1px;
-		position: absolute;
-		text-transform: uppercase;
-		font-weight: 600;
-		top: 10px;
-		right: 10px;
-		padding: 5px 10px;
-		background: $lightbluegreen;
-		border: none;
-		color: $darkblue;
-	}
-	.questions__giveUp:hover {
-		background: $limegreen;
-	}
+input[type=submit] {
+	display: block;
+	margin: 20px auto;
+	margin-top: 30px;
+	// width: 100px;
+	background-color: $lightbluegreen;
+	color: $darkblue;
+	text-transform: uppercase;
+	font-weight: 600;
+}
+.wrapper .questions__giveUp {
+	// border: rgba(255, 100, 100, 1) solid 1px;
+	position: relative;
+	float: right;
+	text-transform: uppercase;
+	font-weight: 600;
+	padding: 5px 10px;
+	background: $lightbluegreen;
+	border: none;
+	color: $darkblue;
+}
+.wrapper .questions__giveUp:hover {
+	background: $limegreen;
+}
 
 
 
 //======================================
 //            MEDIA QUERIES              
 //======================================
-
-
-@media (max-width: 1120px) {
-	
-}
-
-// Portrait tablet and small desktops
-@media (max-width: 940px) {
-	
-}
  
-// Landscape phone to portrait tablet
-@media (max-width: 767px) {
-	
-}
- 
-// Landscape phones and down
-@media (max-width: 480px) {
-	
-}
-
-
-@media (max-width: 400px) {
-
+@media (max-width: 515px) {
+	.questions {
+		width: 100%;
+		.wrapper {
+			padding: 30px 15px;
+			width: 90%;
+		}
+		h3 {
+			font-size: 25px;
+			margin: 10px 0;
+		}
+		p {
+			font-size: 15px;
+		}
+	}
+	.wrapper .questions__giveUp {
+		padding: 2px 5px;
+	}
+	.main__game input[type='submit'] {
+		padding: 10px 5px;
+		width: 150px;
+	}
 }
