@@ -20,10 +20,12 @@
  		firebase.initializeApp(config);
  		quizApp.dbref = firebase.database().ref();
  		quizApp.dbref.on('value', (response) => {
+ 				$('.scores__results').empty();
  				let highScores = response.val().highScores;
  				highScores = highScores.sort((a, b) => {
  					return b.score - a.score
  				});
+ 				quizApp.highScores = highScores;
  				highScores.forEach((score, index) => {
  					$('.scores__results').append(`<li><p><span class="userName scoreName${index}"></span><span class="userScore scoreNum${index}"></span></p></li>`);
  					$(`.scoreName${index}`).text(score.name + ': ');
@@ -60,10 +62,24 @@
  	}
 
  	quizApp.events = () => {
+
+ 		$('.highScoreinput__form').on('submit', function(event) {
+ 			event.preventDefault();
+ 			/* Act on the event */
+ 			let scoreToChange = quizApp.highScores[quizApp.userScoreTakeoverNum];
+ 			scoreToChange.name = $('.newHighName').val();
+ 			scoreToChange.score = quizApp.userScore;
+ 			quizApp.dbref.child('highScores').set(quizApp.highScores);
+
+ 			$('.highScoreinput').fadeOut('slow');
+ 		});
+
  		$('#submitButton').on('click', (e) => {
  			e.preventDefault();
  			// Multiplied value by one to coerce string into number
- 			$('.landingSplash').css('display', 'none');
+ 			$('.landingSplash').fadeOut('slow', function() {
+ 				$('.main').fadeIn('slow');
+ 			});;
  			let year = ($('#yearSelection').val() * 1);
  			quizApp.userDecadeChoice = year;
  			// Make an ajax call for the following nine years after #yearSelection
@@ -174,13 +190,6 @@
  		});
  	}
 
- 	quizApp.endOfGameCheck = function() {
- 		if (quizApp.questionsRemaining <= 0) {
- 			console.log('Game is over!! score:' + quizApp.userScore)
- 		}
- 	}
-
-
  	quizApp.correctAnswer = function() {
  		$('.questions').fadeOut('slow', function() {
  			$('.questions').html(`<div class="wrapper">
@@ -233,7 +242,28 @@
 
  	quizApp.endOfGameCheck = function() {
  		if (quizApp.questionsRemaining <= 0) {
- 			alert('Game Over!');
+ 			$('.main').fadeOut('slow', function() {
+ 				if (quizApp.userScore > 0) {
+ 					$('.yourScoreGoesHere').text('Nice Job! Your final score was ' + quizApp.userScore + '!');
+ 				} else {
+ 					$('.yourScoreGoesHere').text('Ouch! Your final score was ' + quizApp.userScore + '!');
+ 				}
+ 				let highFound = false;
+ 				quizApp.highScores.forEach((score, index)=> {
+ 					if(quizApp.userScore > score.score && highFound === false) {
+ 						highFound = true;
+ 						$('.highScoreinput__blerb').text('Your score was higher than the number ' + (index + 1) + ' score of ' + score.score + '! Enter your name and hit submit!')
+ 						quizApp.userScoreTakeoverNum = index;
+ 						$('.highScoreinput').fadeIn('slow', function() {
+ 							
+ 						});
+ 					}
+ 				})
+
+ 				$('.scores__fade').fadeIn('slow', function() {
+
+ 				});
+ 			});
  		}
  	}
 
@@ -246,7 +276,7 @@
  		titleWords.forEach((word, index) => { //removes non alphanumeric characters from each word (IE Max: becomes Max)
 
  			titleWords[index] = titleWords[index].replace(/\W/g, '');
- 			if (word.toLowerCase() !== 'of' && word.toLowerCase() !== 'will' && word.toLowerCase() !== 'can' && word.toLowerCase() !== 'or' && word.toLowerCase() !== 'if' && word.toLowerCase() !== 'on' && word.toLowerCase() !== 'to' && word.toLowerCase() !== 'a' && word.toLowerCase() !== 'is' && word.toLowerCase() !== 'and' && word.toLowerCase() !== 'the' && word.toLowerCase() !== 'it' && word.length > 1) {
+ 			if (word.toLowerCase() !== 'at' && word.toLowerCase() !== 'of' && word.toLowerCase() !== 'will' && word.toLowerCase() !== 'can' && word.toLowerCase() !== 'or' && word.toLowerCase() !== 'if' && word.toLowerCase() !== 'on' && word.toLowerCase() !== 'to' && word.toLowerCase() !== 'a' && word.toLowerCase() !== 'is' && word.toLowerCase() !== 'and' && word.toLowerCase() !== 'the' && word.toLowerCase() !== 'it' && word.length > 1) {
  				newDescription = newDescription.replace(new RegExp(titleWords[index], 'gi'), '*Blank*');
  			}
 
@@ -341,7 +371,7 @@
  	quizApp.generateCastData = function() {
  		let fiveMovies = quizApp.pickFiveMovies();
  		quizApp.getCastForFiveMovies(fiveMovies);
- 		let roleQuestionMovie = quizApp.pickRoleMovie();
+ 		// let roleQuestionMovie = quizApp.pickRoleMovie();
  	}
 
  	quizApp.generateFiveYearQuestions = function() {
@@ -533,62 +563,62 @@
  	}
 
 
-	quizApp.pickRoleMovie = function() {
-		let roleMovieArray = [];
-		let movieObject	= quizApp.moviedata
-		let randoNum = Math.floor(Math.random() * (movieObject.length)) + 1;
-		let movieForRoleQ = movieObject[randoNum];
-		roleMovieArray.push(movieForRoleQ);
-		let movieTitle = movieForRoleQ.title; // ERROR - 'title' UNDEFINED
-		// console.log('Movie title =>', movieTitle);
-		let movieId = movieForRoleQ.id;
-		let castObject = quizApp.getCasts(movieId);
-		$.when(castObject).then(function(data) {
-			let roleMovieCast = data.cast;
-			quizApp.generateRoleQuestion(roleMovieCast);
-		});
-	}
-	
-	// Which role did (this actor) play in (this movie)?
-	quizApp.generateRoleQuestion = function(cast) {
-			let roleQuestionObject = {};
-			// console.log('Main Character', cast[0].character);
-			let correctCharacter = cast[0].character; // ERROR - '0' UNDEFINED
-			let correctName = cast[0].name;
-			let wrongCharactersArray = [];
-			let randoArray = [];
-			for (let i = 0; i < 3; i++) {
-				let randoNum = Math.floor(Math.random() * (cast.length - 1)) + 1;
-				randoArray.push(randoNum);
-				let wrongCharacter = cast[randoNum].character; // ERROR - 'character' UNDEFINED
-				// console.log('Wrong character =>', wrongCharacter);
-				wrongCharactersArray.push(wrongCharacter);
-			}
-			// console.log(randoArray);
-			// console.log('Characters Array', wrongCharactersArray);
-			let allCharacters = wrongCharactersArray;
-			allCharacters.push(correctCharacter);
-			// console.log('All Characters', allCharacters);
-			
-			roleQuestionObject.wrongAnswers = wrongCharactersArray;
-			roleQuestionObject.correctAnswer = correctCharacter;
-			roleQuestionObject.allCharacters = allCharacters;
-			roleQuestionObject.question = `What character did this actor play in in this movie?`;
-			roleQuestionObject.type = 'multipleChoice';
-			// console.log(roleQuestionObject);
-			return roleQuestionObject;
-	}
+ 	// quizApp.pickRoleMovie = function() {
+ 	// 	let roleMovieArray = [];
+ 	// 	let movieObject	= quizApp.moviedata
+ 	// 	let randoNum = Math.floor(Math.random() * (movieObject.length)) + 1;
+ 	// 	let movieForRoleQ = movieObject[randoNum];
+ 	// 	roleMovieArray.push(movieForRoleQ);
+ 	// 	let movieTitle = movieForRoleQ.title; // ERROR - 'title' UNDEFINED
+ 	// 	// console.log('Movie title =>', movieTitle);
+ 	// 	let movieId = movieForRoleQ.id;
+ 	// 	let castObject = quizApp.getCasts(movieId);
+ 	// 	$.when(castObject).then(function(data) {
+ 	// 		let roleMovieCast = data.cast;
+ 	// 		quizApp.generateRoleQuestion(roleMovieCast);
+ 	// 	});
+ 	// }
 
-	quizApp.generateFiveRandomRoleQuestion = function(cast) {
-	 		let roleQuestionArray = [];
-	 		quizApp.roleQuestionArray = roleQuestionArray;
-			for (var i = 0; i < 4; i++) {
-				// quizApp.roleQuestionArray.push(quizApp.pickRoleMovie());
-				quizApp.roleQuestionArray.push(quizApp.generateRoleQuestion());
-			}
-			console.log('Role Array', quizApp.roleQuestionArray);
-			return quizApp.roleQuestionArray;
-	}
+ 	// // Which role did (this actor) play in (this movie)?
+ 	// quizApp.generateRoleQuestion = function(cast) {
+ 	// 		let roleQuestionObject = {};
+ 	// 		// console.log('Main Character', cast[0].character);
+ 	// 		let correctCharacter = cast[0].character; // ERROR - '0' UNDEFINED
+ 	// 		let correctName = cast[0].name;
+ 	// 		let wrongCharactersArray = [];
+ 	// 		let randoArray = [];
+ 	// 		for (let i = 0; i < 3; i++) {
+ 	// 			let randoNum = Math.floor(Math.random() * (cast.length - 1)) + 1;
+ 	// 			randoArray.push(randoNum);
+ 	// 			let wrongCharacter = cast[randoNum].character; // ERROR - 'character' UNDEFINED
+ 	// 			// console.log('Wrong character =>', wrongCharacter);
+ 	// 			wrongCharactersArray.push(wrongCharacter);
+ 	// 		}
+ 	// 		// console.log(randoArray);
+ 	// 		// console.log('Characters Array', wrongCharactersArray);
+ 	// 		let allCharacters = wrongCharactersArray;
+ 	// 		allCharacters.push(correctCharacter);
+ 	// 		// console.log('All Characters', allCharacters);
+
+ 	// 		roleQuestionObject.wrongAnswers = wrongCharactersArray;
+ 	// 		roleQuestionObject.correctAnswer = correctCharacter;
+ 	// 		roleQuestionObject.allCharacters = allCharacters;
+ 	// 		roleQuestionObject.question = `What character did this actor play in in this movie?`;
+ 	// 		roleQuestionObject.type = 'multipleChoice';
+ 	// 		// console.log(roleQuestionObject);
+ 	// 		return roleQuestionObject;
+ 	// }
+
+ 	// quizApp.generateFiveRandomRoleQuestion = function(cast) {
+ 	//  		let roleQuestionArray = [];
+ 	//  		quizApp.roleQuestionArray = roleQuestionArray;
+ 	// 		for (var i = 0; i < 4; i++) {
+ 	// 			// quizApp.roleQuestionArray.push(quizApp.pickRoleMovie());
+ 	// 			quizApp.roleQuestionArray.push(quizApp.generateRoleQuestion());
+ 	// 		}
+ 	// 		console.log('Role Array', quizApp.roleQuestionArray);
+ 	// 		return quizApp.roleQuestionArray;
+ 	// }
 
 
  	quizApp.populateGameBoard = function() {

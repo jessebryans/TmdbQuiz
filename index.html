@@ -63,11 +63,7 @@
 								<ul class="main__game__category__rev gameCategory">
 									<li class="category category4">Highest Earners</li>
 								</ul>
-								<ul class="main__game__category5 gameCategory">
-									<li class="category category5">Name the Character</li>
-								</ul>
 							</div>
-							<input type="submit" value="Play Again" id="againButton" onclick="window.location.reload()">
 						</div>
 					</div>
 				</section>
@@ -89,9 +85,11 @@
 					</section>
 				<!--GAME QUESTION WINDOW END-->
 				<!--SCORE WINDOW START-->
+				<div class="scores__fade">
 				<section class="scores">
+					<p class="yourScoreGoesHere"></p>
 					<div class="wrapper">
-						<h1 class="scores_title">High Scores</h1>
+						<h2 class="scores_title">High Scores</h2>
 						<ul class="scores__results">
 
 						</ul>
@@ -100,10 +98,19 @@
 					<p class="footer__copyright">&copy; 2017 Trebek Squad. All rights reserved.</p>
 				</footer>
 				</section>
+				</div>
 				<!--SCORE WINDOW END-->
 			</div> <!-- wrapper -->
 		</main>
-	
+		<section class="highScoreinput">
+			<form class="highScoreinput__form" action="">
+				<h2>New High Score!</h2>
+				<p class="highScoreinput__blerb">You beat a high score!</p>
+				<label for="nameInput">Enter Your Name</label>
+				<input class="newHighName" type="text">
+				<input  type="submit" value="Submit High Score">
+			</form>
+		</section>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 		<script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
